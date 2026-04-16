@@ -2,14 +2,46 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Admin Dashboard</title>
+<title>Kasipag Admin (Firebase)</title>
 
 <style>
 body {
+  margin: 0;
   font-family: Arial;
-  background: #0f172a;
+  background: #0b1220;
   color: white;
   padding: 20px;
+}
+
+.header {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.form {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #22c55e;
+  color: white;
 }
 
 .card {
@@ -17,144 +49,84 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
-
-input, select, button {
-  padding: 6px;
-  border-radius: 6px;
-  border: none;
-}
-
-button {
-  cursor: pointer;
-}
-
-.status {
-  font-weight: bold;
-}
-
-.pending { color: #facc15; }
-.paid { color: #22c55e; }
-.none { color: #ef4444; }
 </style>
 </head>
 
 <body>
 
+<div class="header">👑 Kasipag Admin Dashboard (Firebase)</div>
+
+<!-- FORM -->
+<div class="form">
+  <input id="name" placeholder="Customer Name">
+  <input id="amount" placeholder="Amount">
+  <button onclick="addCustomer()">Add</button>
+</div>
+
+<!-- LIST -->
+<div id="list"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
 <script>
-if (localStorage.getItem("role") !== "admin") {
-  window.location.href = "/index.html";
-}
+// 🔥 YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app",
+  storageBucket: "kasipag-app.firebasestorage.app",
+  messagingSenderId: "442166485005",
+  appId: "1:442166485005:web:ed07396b8a59006efa3544",
+  measurementId: "G-SJQKE0F3H0"
+};
 
-/* GET DATA */
-function getData() {
-  return JSON.parse(localStorage.getItem("payments")) || [];
-}
-
-/* SAVE DATA */
-function saveData(data) {
-  localStorage.setItem("payments", JSON.stringify(data));
-}
+// INIT FIREBASE
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 /* ADD CUSTOMER */
 function addCustomer() {
   let name = document.getElementById("name").value;
   let amount = document.getElementById("amount").value;
 
-  if (!name || !amount) return alert("Fill all fields");
+  if (!name || !amount) {
+    alert("Fill all fields");
+    return;
+  }
 
-  let data = getData();
-
-  data.push({
+  db.collection("payments").add({
     name: name,
     amount: amount,
     assignedTo: "",
     status: "No Payment"
   });
 
-  saveData(data);
-  render();
+  document.getElementById("name").value = "";
+  document.getElementById("amount").value = "";
 }
 
-/* ASSIGN RIDER */
-function assignRider(index, rider) {
-  let data = getData();
-  data[index].assignedTo = rider;
-  saveData(data);
-  render();
-}
-
-/* DELETE */
-function removeCustomer(index) {
-  let data = getData();
-  data.splice(index, 1);
-  saveData(data);
-  render();
-}
-
-/* RENDER */
-function render() {
-  let data = getData();
+/* REAL-TIME LIST */
+db.collection("payments").onSnapshot(snapshot => {
   let list = document.getElementById("list");
   list.innerHTML = "";
 
-  data.forEach((c, i) => {
-
-    let statusClass = "none";
-    if (c.status === "Pending") statusClass = "pending";
-    if (c.status === "Paid") statusClass = "paid";
+  snapshot.forEach(doc => {
+    let d = doc.data();
 
     list.innerHTML += `
       <div class="card">
-        <div>
-          <strong>${c.name}</strong><br>
-          ₱${c.amount}<br>
-          Assigned Rider: ${c.assignedTo || "None"}<br>
-          Status: <span class="${statusClass}">${c.status}</span>
-        </div>
-
-        <div>
-          <select onchange="assignRider(${i}, this.value)">
-            <option value="">Assign Rider</option>
-            <option value="rider1">Rider 1</option>
-            <option value="rider2">Rider 2</option>
-          </select>
-
-          <br><br>
-
-          <button onclick="removeCustomer(${i})" style="background:red;color:white;">
-            Delete
-          </button>
-        </div>
+        <b>${d.name}</b><br>
+        ₱${d.amount}<br>
+        Rider: ${d.assignedTo || "None"}<br>
+        Status: ${d.status}
       </div>
     `;
   });
-}
-
-render();
+});
 </script>
-
-<h1>Admin Dashboard</h1>
-
-<!-- ADD CUSTOMER -->
-<div class="card">
-  <div>
-    <input id="name" placeholder="Customer Name"><br>
-    <input id="amount" placeholder="Amount">
-  </div>
-
-  <button onclick="addCustomer()" style="background:#22c55e;">
-    Add Customer
-  </button>
-</div>
-
-<!-- LIST -->
-<div id="list"></div>
-
-<a href="/index.html" onclick="localStorage.clear()">Logout</a>
 
 </body>
 </html>
