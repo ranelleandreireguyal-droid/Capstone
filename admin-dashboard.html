@@ -20,14 +20,12 @@ body {
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 input, select, button {
   padding: 6px;
   border-radius: 6px;
   border: none;
-  margin-top: 5px;
 }
 
 button {
@@ -43,12 +41,14 @@ if (localStorage.getItem("role") !== "admin") {
   window.location.href = "/index.html";
 }
 
-/* SHARED DATA */
-let customers = JSON.parse(localStorage.getItem("payments")) || [];
+/* ALWAYS LOAD LATEST DATA */
+function getData() {
+  return JSON.parse(localStorage.getItem("payments")) || [];
+}
 
-/* SAVE */
-function save() {
-  localStorage.setItem("payments", JSON.stringify(customers));
+/* SAVE DATA */
+function saveData(data) {
+  localStorage.setItem("payments", JSON.stringify(data));
 }
 
 /* ADD CUSTOMER */
@@ -58,37 +58,42 @@ function addCustomer() {
 
   if (!name || !amount) return alert("Fill all fields");
 
-  customers.push({
+  let data = getData();
+
+  data.push({
     name: name,
     amount: amount,
     assignedTo: "",
     status: "No Payment"
   });
 
-  save();
+  saveData(data);
   render();
 }
 
 /* ASSIGN RIDER */
 function assignRider(index, rider) {
-  customers[index].assignedTo = rider;
-  save();
+  let data = getData();
+  data[index].assignedTo = rider;
+  saveData(data);
   render();
 }
 
 /* DELETE */
 function removeCustomer(index) {
-  customers.splice(index, 1);
-  save();
+  let data = getData();
+  data.splice(index, 1);
+  saveData(data);
   render();
 }
 
 /* RENDER */
 function render() {
+  let data = getData();
   let list = document.getElementById("list");
   list.innerHTML = "";
 
-  customers.forEach((c, i) => {
+  data.forEach((c, i) => {
     list.innerHTML += `
       <div class="card">
         <div>
@@ -121,7 +126,6 @@ render();
 
 <h1>Admin Dashboard</h1>
 
-<!-- ADD CUSTOMER -->
 <div class="card">
   <div>
     <input id="name" placeholder="Customer Name"><br>
@@ -133,7 +137,6 @@ render();
   </button>
 </div>
 
-<!-- LIST -->
 <div id="list"></div>
 
 <a href="/index.html" onclick="localStorage.clear()">Logout</a>
