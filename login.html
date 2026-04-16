@@ -1,113 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Secure Login</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0f172a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: white;
-    }
-
-    .box {
-      background: #111827;
-      padding: 30px;
-      border-radius: 15px;
-      width: 300px;
-      text-align: center;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-      border-radius: 8px;
-      border: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #3b82f6;
-      color: white;
-      cursor: pointer;
-    }
-
-    .role {
-      margin-bottom: 10px;
-      color: #cbd5e1;
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="box">
-  <h2>Login</h2>
-
-  <div class="role" id="roleText"></div>
-
-  <input id="username" placeholder="username">
-  <input id="password" type="password" placeholder="password">
-
-  <button onclick="login()">Login</button>
-</div>
-
 <script>
 const selectedRole = localStorage.getItem("selectedRole");
-document.getElementById("roleText").innerText = "Role: " + selectedRole;
 
 /*
-  DEMO ACCOUNTS (PALITAN MO SA DATABASE LATER)
+  🔒 ONE ACCOUNT PER ROLE
+  (Pwede mo palitan username/password)
 */
-const users = [
-  { user: "admin1", pass: "1234", role: "admin" },
-  { user: "rider1", pass: "1234", role: "rider" },
-  { user: "cashier1", pass: "1234", role: "cashier" }
-];
+const accounts = {
+  admin:   { user: "admin",   pass: "admin123" },
+  rider:   { user: "rider",   pass: "rider123" },
+  cashier: { user: "cashier", pass: "cash123" }
+};
 
 function login() {
-  const u = document.getElementById("username").value;
-  const p = document.getElementById("password").value;
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
 
-  const foundUser = users.find(x => x.user === u && x.pass === p);
-
-  if (!foundUser) {
-    alert("Invalid credentials");
+  if (!selectedRole) {
+    alert("No role selected!");
+    window.location.href = "/index.html";
     return;
   }
 
-  // 🚨 ROLE CHECK (IMPORTANT SECURITY)
-  if (foundUser.role !== selectedRole) {
-    alert("Access denied! This account is not allowed for this role.");
-    return;
-  }
+  const acc = accounts[selectedRole];
 
-  // SAVE SESSION
-  localStorage.setItem("role", foundUser.role);
+  // 🔥 STRICT MATCH (ROLE + ACCOUNT)
+  if (u === acc.user && p === acc.pass) {
+    localStorage.setItem("role", selectedRole);
 
-  // REDIRECT SAFE
-  if (foundUser.role === "admin") {
-    window.location.href = "/admin-dashboard.html";
-  }
-  else if (foundUser.role === "rider") {
-    window.location.href = "/rider-dashboard.html";
-  }
-  else {
-    window.location.href = "/cashier-dashboard.html";
+    // redirect
+    if (selectedRole === "admin") {
+      window.location.href = "/admin-dashboard.html";
+    } else if (selectedRole === "rider") {
+      window.location.href = "/rider-dashboard.html";
+    } else {
+      window.location.href = "/cashier-dashboard.html";
+    }
+
+  } else {
+    alert("Invalid credentials for " + selectedRole + " account!");
   }
 }
 </script>
-
-</body>
-</html>
