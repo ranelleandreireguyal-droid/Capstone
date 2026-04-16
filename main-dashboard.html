@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Main Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      text-align: center;
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 16px;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .admin { background: #ef4444; color: white; }
+    .rider { background: #22c55e; color: white; }
+    .cashier { background: #3b82f6; color: white; }
+
+    button:hover {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Kasipag System</h1>
+    <p>Select your role</p>
+
+    <button class="admin" onclick="go('admin')">Admin Login</button>
+    <button class="rider" onclick="go('rider')">Rider Login</button>
+    <button class="cashier" onclick="go('cashier')">Cashier Login</button>
+  </div>
+
+  <script>
+    function go(role) {
+      localStorage.setItem("selectedRole", role);
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
