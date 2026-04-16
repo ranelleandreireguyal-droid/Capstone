@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kasipag Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 100px;
+      background: #f5f5f5;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      width: 300px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 8px;
+      width: 90%;
+    }
+
+    button {
+      background: orange;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Kasipag Login</h2>
+
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+const SUPABASE_URL = "https://gbttezmevcmavaeeerdk.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdidHRlem1ldmNtYXZhZWVlcmRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMDExODksImV4cCI6MjA5MTg3NzE4OX0.mWB0bUWtUyi8W2z0NgCu5GictFbW4wKFM142lN705pM";
+
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&password=eq.${password}`, {
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": "Bearer " + SUPABASE_KEY
+    }
+  });
+
+  const data = await res.json();
+
+  if (data.length > 0) {
+    const role = data[0].role;
+
+    if (role === "admin") window.location.href = "admin.html";
+    if (role === "rider") window.location.href = "rider.html";
+    if (role === "cashier") window.location.href = "cashier.html";
+  } else {
+    alert("Invalid login");
+  }
+}
+</script>
+
+</body>
+</html>

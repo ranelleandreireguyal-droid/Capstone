@@ -1,0 +1,1 @@
+<h1>Cashier Page</h1>
