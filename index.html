@@ -5,33 +5,39 @@
 </head>
 <body>
 
-<h2>Login</h2>
+<h2>Kasipag Login</h2>
 
-<input type="email" id="email" placeholder="Email"><br>
-<input type="password" id="password" placeholder="Password"><br>
+<input type="email" id="email" placeholder="Email"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
 <button onclick="login()">Login</button>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<script>
+// ✅ YOUR CONFIG (ginamit ko na)
 const firebaseConfig = {
-  apiKey: "PASTE_API_KEY",
-  authDomain: "PASTE_AUTH_DOMAIN",
-  projectId: "PASTE_PROJECT_ID"
+  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app",
+  storageBucket: "kasipag-app.firebasestorage.app",
+  messagingSenderId: "442166485005",
+  appId: "1:442166485005:web:ed07396b8a59006efa3544",
+  measurementId: "G-SJQKE0F3H0"
 };
 
-firebase.initializeApp(firebaseConfig);
+// Initialize
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-function login() {
+// Login function
+window.login = function() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-
-      // SIMPLE ROLE CHECK
+      // 🔥 SIMPLE ROLE SYSTEM
       if (email.includes("admin")) {
         window.location.href = "admin.html";
       } else if (email.includes("rider")) {
@@ -41,9 +47,9 @@ function login() {
       }
     })
     .catch((error) => {
-      alert("Login failed");
+      alert("Login failed: " + error.message);
     });
-}
+};
 </script>
 
 </body>
