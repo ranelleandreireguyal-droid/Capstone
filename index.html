@@ -7,73 +7,62 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
+      font-family: Arial;
+      background: #0f172a;
       display: flex;
       height: 100vh;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      color: white;
     }
 
     .box {
-      width: 340px;
       background: #111827;
-      padding: 35px;
-      border-radius: 18px;
+      padding: 30px;
+      border-radius: 15px;
+      width: 320px;
       text-align: center;
-    }
-
-    h1 { margin-bottom: 10px; }
-
-    p {
-      color: #cbd5e1;
-      margin-bottom: 20px;
-      font-size: 14px;
     }
 
     button {
       width: 100%;
-      padding: 12px;
       margin: 8px 0;
+      padding: 12px;
       border: none;
-      border-radius: 12px;
-      font-size: 16px;
+      border-radius: 10px;
       cursor: pointer;
     }
 
-    .admin { background: #ef4444; color: white; }
-    .rider { background: #22c55e; color: white; }
-    .cashier { background: #3b82f6; color: white; }
-
-    button:hover { opacity: 0.9; }
+    .a { background: #ef4444; color: white; }
+    .b { background: #22c55e; color: white; }
+    .c { background: #3b82f6; color: white; }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h1>Kasipag App</h1>
-    <p>Select your role</p>
+<div class="box">
+  <h2>Kasipag App</h2>
+  <p>Select Role</p>
 
-    <button class="admin" onclick="selectRole('admin')">Admin Login</button>
-    <button class="rider" onclick="selectRole('rider')">Rider Login</button>
-    <button class="cashier" onclick="selectRole('cashier')">Cashier Login</button>
-  </div>
+  <button class="a" onclick="selectRole('admin')">Admin</button>
+  <button class="b" onclick="selectRole('rider')">Rider</button>
+  <button class="c" onclick="selectRole('cashier')">Cashier</button>
+</div>
 
-  <script>
-    function selectRole(role) {
-      localStorage.setItem("selectedRole", role);
-      window.location.href = "login.html";
-    }
+<script>
+function selectRole(role) {
+  localStorage.setItem("selectedRole", role);
+  window.location.href = "./login.html";
+}
 
-    // auto redirect if already logged in
-    const role = localStorage.getItem("role");
+// auto redirect if logged in
+const role = localStorage.getItem("role");
 
-    if (role === "admin") window.location.href = "admin-dashboard.html";
-    if (role === "rider") window.location.href = "rider-dashboard.html";
-    if (role === "cashier") window.location.href = "cashier-dashboard.html";
-  </script>
+if (role === "admin") window.location.href = "./admin-dashboard.html";
+if (role === "rider") window.location.href = "./rider-dashboard.html";
+if (role === "cashier") window.location.href = "./cashier-dashboard.html";
+</script>
 
 </body>
 </html>
