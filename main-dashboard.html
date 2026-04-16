@@ -21,6 +21,23 @@ body {
   padding:20px;
 }
 
+/* LOGO STYLE */
+.logo {
+  width:120px;
+  height:120px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 10px auto;
+  border-radius:20px;
+}
+
+.brand {
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+/* BUTTONS */
 .sidebar button {
   width:100%;
   padding:10px;
@@ -30,6 +47,10 @@ body {
   background:#1f2937;
   color:white;
   cursor:pointer;
+}
+
+.sidebar button:hover {
+  background:#374151;
 }
 
 /* MAIN */
@@ -50,7 +71,12 @@ body {
 <body>
 
 <div class="sidebar">
-  <h2>Kasipag</h2>
+
+  <!-- 🔥 LOGO HERE -->
+  <img src="download.png" class="logo" alt="Kasipag Logo">
+
+  <div class="brand">KASIPAG</div>
+
   <p id="roleText"></p>
 
   <div id="menu"></div>
@@ -60,13 +86,16 @@ body {
 
 <div class="main">
   <h1>Dashboard</h1>
-  <div id="content" class="card">Welcome!</div>
+
+  <div id="content" class="card">
+    Welcome to Kasipag System
+  </div>
 </div>
 
 <script>
 const role = localStorage.getItem("role");
 
-// 🔒 PROTECT PAGE
+// protection
 if (!role) {
   window.location.href = "/index.html";
 }
@@ -76,7 +105,7 @@ document.getElementById("roleText").innerText = "Role: " + role;
 const menu = document.getElementById("menu");
 const content = document.getElementById("content");
 
-// ROLE-BASED MENU
+// role menus
 if (role === "admin") {
   menu.innerHTML = `
     <button onclick="load('users')">Manage Users</button>
@@ -96,12 +125,10 @@ else {
   `;
 }
 
-// CONTENT SWITCH
 function load(page) {
   content.innerHTML = "<h3>" + page + "</h3>";
 }
 
-// LOGOUT
 function logout() {
   localStorage.clear();
   window.location.href = "/index.html";
