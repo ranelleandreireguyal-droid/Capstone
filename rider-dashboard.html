@@ -1,10 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Rider Dashboard</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+select {
+  padding: 5px;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
 <script>
+if (localStorage.getItem("role") !== "rider") {
+  window.location.href = "/index.html";
+}
+
+/* LOAD DATA */
 let customers = JSON.parse(localStorage.getItem("payments")) || [
   { name: "Juan Dela Cruz", status: "No Payment" },
   { name: "Maria Santos", status: "No Payment" }
 ];
 
+/* SAVE DATA */
 function save() {
   localStorage.setItem("payments", JSON.stringify(customers));
 }
-</script> 
+
+/* UPDATE STATUS */
+function updateStatus(i, value) {
+  customers[i].status = value;
+  save();
+  render();
+}
+
+/* RENDER */
+function render() {
+  let list = document.getElementById("list");
+  list.innerHTML = "";
+
+  customers.forEach((c, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <div>
+          <strong>${c.name}</strong><br>
+          Status: ${c.status}
+        </div>
+
+        <div>
+          <select onchange="updateStatus(${i}, this.value)">
+            <option>No Payment</option>
+            <option>Pending</option>
+            <option>Paid</option>
+          </select>
+        </div>
+      </div>
+    `;
+  });
+}
+
+render();
+</script>
+
+<h1>Rider Dashboard</h1>
+
+<div id="list"></div>
+
+<a href="/index.html" onclick="localStorage.clear()">Logout</a>
+
+</body>
+</html>
