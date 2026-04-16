@@ -1,280 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kasipag Admin Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Kasipag Dashboard</title>
 
 <style>
 body {
   margin: 0;
-  font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #f1f5f9;
-  padding: 20px;
-  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: white;
 }
 
-.header {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.form {
-  background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #111827;
+  position: fixed;
   padding: 20px;
-  border-radius: 15px;
   display: flex;
-  gap: 15px;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.1);
 }
 
-input {
-  padding: 12px 16px;
-  border-radius: 10px;
+/* LOGO */
+.logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: white;
+  padding: 6px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* BRAND */
+.brand {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* ROLE */
+#roleText {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 15px;
+}
+
+/* MENU */
+.sidebar button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
   border: none;
-  outline: none;
-  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  background: #1f2937;
   color: white;
-  font-size: 16px;
-  flex: 1;
-  min-width: 200px;
-}
-
-input::placeholder {
-  color: #94a3b8;
-}
-
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
   cursor: pointer;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(34,197,94,0.3);
+  transition: 0.2s;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(34,197,94,0.4);
+.sidebar button:hover {
+  background: #374151;
+  transform: scale(1.03);
+}
+
+/* LOGOUT */
+.logout {
+  margin-top: auto;
+  background: #dc2626 !important;
+}
+
+/* MAIN */
+.main {
+  margin-left: 260px;
+  padding: 25px;
+}
+
+/* CARDS */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .card {
-  background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+  background: #1e293b;
   padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.2s;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
-}
-
-.card-info {
-  flex: 1;
-}
-
-.card-info strong {
-  font-size: 18px;
-  color: #f1f5f9;
-  display: block;
-  margin-bottom: 5px;
-}
-
-.card-info div {
-  color: #cbd5e1;
-  margin-bottom: 3px;
-  font-size: 14px;
-}
-
-.status {
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.status-pending { background: #facc15; color: #1f2937; }
-.status-paid { background: #22c55e; color: white; }
-.status-none { background: #ef4444; color: white; }
-
-.card-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255,255,255,0.1);
-  color: white;
-  font-size: 14px;
-  outline: none;
-}
-
-select option {
-  background: #1e293b;
-  color: white;
-}
-
-.delete-btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.delete-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(239,68,68,0.4);
-}
-
-.no-data {
-  text-align: center;
-  color: #94a3b8;
-  font-style: italic;
-  margin-top: 50px;
+  transform: translateY(-5px);
+  background: #24324a;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">👑 Kasipag Admin Dashboard</div>
+<div class="sidebar">
 
-<!-- FORM -->
-<div class="form">
-  <input id="name" placeholder="Customer Name" required>
-  <input id="amount" placeholder="Loan Amount (₱)" type="number" min="0" required>
-  <button onclick="addCustomer()">Add Customer</button>
+  <img src="/picture/download.png " class="logo" alt="Kasipag Logo">
+
+  <div class="brand">KASIPAG</div>
+
+  <p id="roleText"></p>
+
+  <div id="menu"></div>
+
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
 
-<!-- LIST -->
-<div id="list"></div>
+<div class="main">
+  <h1>Dashboard</h1>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <div class="card-container">
+    <div class="card">Total Users</div>
+    <div class="card">Active Loans</div>
+    <div class="card">Payments</div>
+  </div>
+
+  <div id="content" class="card" style="margin-top:20px;">
+    Welcome to Kasipag System
+  </div>
+</div>
 
 <script>
-// 🔥 YOUR FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
-  authDomain: "kasipag-app.firebaseapp.com",
-  projectId: "kasipag-app",
-  storageBucket: "kasipag-app.firebasestorage.app",
-  messagingSenderId: "442166485005",
-  appId: "1:442166485005:web:ed07396b8a59006efa3544",
-  measurementId: "G-SJQKE0F3H0"
-};
+const role = localStorage.getItem("role");
 
-// INIT FIREBASE
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-/* ADD CUSTOMER */
-function addCustomer() {
-  let name = document.getElementById("name").value.trim();
-  let amount = parseFloat(document.getElementById("amount").value);
-
-  if (!name || isNaN(amount) || amount <= 0) {
-    alert("Please enter valid customer name and amount");
-    return;
-  }
-
-  db.collection("payments").add({
-    name: name,
-    amount: amount,
-    assignedTo: "",
-    status: "No Payment",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  document.getElementById("name").value = "";
-  document.getElementById("amount").value = "";
+if (!role) {
+  window.location.href = "/index.html";
 }
 
-/* ASSIGN RIDER */
-function assignRider(docId, rider) {
-  db.collection("payments").doc(docId).update({
-    assignedTo: rider
-  });
+document.getElementById("roleText").innerText = "Role: " + role;
+
+const menu = document.getElementById("menu");
+const content = document.getElementById("content");
+
+/* ROLE SYSTEM */
+if (role === "admin") {
+  menu.innerHTML = `
+    <button onclick="load('Users')">Manage Users</button>
+    <button onclick="load('Reports')">Reports</button>
+  `;
+}
+else if (role === "rider") {
+  menu.innerHTML = `
+    <button onclick="load('Deliveries')">My Deliveries</button>
+    <button onclick="load('Status')">Update Status</button>
+  `;
+}
+else {
+  menu.innerHTML = `
+    <button onclick="load('Payments')">Payments</button>
+    <button onclick="load('History')">History</button>
+  `;
 }
 
-/* DELETE PAYMENT */
-function deletePayment(docId) {
-  if (confirm("Are you sure you want to delete this payment?")) {
-    db.collection("payments").doc(docId).delete();
-  }
+function load(page) {
+  content.innerHTML = `<h3>${page}</h3><p>Loading ${page} module...</p>`;
 }
 
-/* REAL-TIME LIST */
-db.collection("payments").orderBy("createdAt", "desc").onSnapshot(snapshot => {
-  let list = document.getElementById("list");
-  list.innerHTML = "";
-
-  if (snapshot.empty) {
-    list.innerHTML = '<div class="no-data">No payments found. Add a customer to get started.</div>';
-    return;
-  }
-
-  snapshot.forEach(doc => {
-    let d = doc.data();
-    let docId = doc.id;
-
-    let statusClass = "status-none";
-    if (d.status === "Pending") statusClass = "status-pending";
-    if (d.status === "Paid") statusClass = "status-paid";
-
-    list.innerHTML += `
-      <div class="card">
-        <div class="card-info">
-          <strong>${d.name}</strong>
-          <div>Amount: ₱${d.amount.toLocaleString()}</div>
-          <div>Rider Assigned: ${d.assignedTo || "Not Assigned"}</div>
-          <div>Status: <span class="status ${statusClass}">${d.status}</span></div>
-        </div>
-        <div class="card-actions">
-          <select onchange="assignRider('${docId}', this.value)">
-            <option value="">Assign Rider</option>
-            <option value="Rider 1" ${d.assignedTo === "Rider 1" ? "selected" : ""}>Rider 1</option>
-            <option value="Rider 2" ${d.assignedTo === "Rider 2" ? "selected" : ""}>Rider 2</option>
-            <option value="Rider 3" ${d.assignedTo === "Rider 3" ? "selected" : ""}>Rider 3</option>
-          </select>
-          <button class="delete-btn" onclick="deletePayment('${docId}')">Delete</button>
-        </div>
-      </div>
-    `;
-  });
-});
+function logout() {
+  localStorage.clear();
+  window.location.href = "/index.html";
+}
 </script>
 
 </body>
