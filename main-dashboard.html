@@ -1,176 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Kasipag Dashboard</title>
+<title>Kasipag Admin (Firebase)</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #0b1220;
   color: white;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width: 240px;
-  height: 100vh;
-  background: #111827;
-  position: fixed;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* LOGO */
-.logo {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  background: white;
-  padding: 6px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-
-/* BRAND */
-.brand {
+.header {
+  font-size: 22px;
   font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-/* ROLE */
-#roleText {
-  font-size: 13px;
-  color: #9ca3af;
   margin-bottom: 15px;
 }
 
-/* MENU */
-.sidebar button {
-  width: 100%;
+.form {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
   padding: 10px;
-  margin: 5px 0;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+button {
+  padding: 10px 15px;
   border: none;
   border-radius: 8px;
-  background: #1f2937;
-  color: white;
   cursor: pointer;
-  transition: 0.2s;
-}
-
-.sidebar button:hover {
-  background: #374151;
-  transform: scale(1.03);
-}
-
-/* LOGOUT */
-.logout {
-  margin-top: auto;
-  background: #dc2626 !important;
-}
-
-/* MAIN */
-.main {
-  margin-left: 260px;
-  padding: 25px;
-}
-
-/* CARDS */
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 20px;
+  background: #22c55e;
+  color: white;
 }
 
 .card {
   background: #1e293b;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  transition: 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  background: #24324a;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
+<div class="header">👑 Kasipag Admin Dashboard (Firebase)</div>
 
-  <img src="/picture/download.png " class="logo" alt="Kasipag Logo">
-
-  <div class="brand">KASIPAG</div>
-
-  <p id="roleText"></p>
-
-  <div id="menu"></div>
-
-  <button class="logout" onclick="logout()">Logout</button>
+<!-- FORM -->
+<div class="form">
+  <input id="name" placeholder="Customer Name">
+  <input id="amount" placeholder="Amount">
+  <button onclick="addCustomer()">Add</button>
 </div>
 
-<div class="main">
-  <h1>Dashboard</h1>
+<!-- LIST -->
+<div id="list"></div>
 
-  <div class="card-container">
-    <div class="card">Total Users</div>
-    <div class="card">Active Loans</div>
-    <div class="card">Payments</div>
-  </div>
-
-  <div id="content" class="card" style="margin-top:20px;">
-    Welcome to Kasipag System
-  </div>
-</div>
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
-const role = localStorage.getItem("role");
+// 🔥 YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app",
+  storageBucket: "kasipag-app.firebasestorage.app",
+  messagingSenderId: "442166485005",
+  appId: "1:442166485005:web:ed07396b8a59006efa3544",
+  measurementId: "G-SJQKE0F3H0"
+};
 
-if (!role) {
-  window.location.href = "/index.html";
+// INIT FIREBASE
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* ADD CUSTOMER */
+function addCustomer() {
+  let name = document.getElementById("name").value;
+  let amount = document.getElementById("amount").value;
+
+  if (!name || !amount) {
+    alert("Fill all fields");
+    return;
+  }
+
+  db.collection("payments").add({
+    name: name,
+    amount: amount,
+    assignedTo: "",
+    status: "No Payment"
+  });
+
+  document.getElementById("name").value = "";
+  document.getElementById("amount").value = "";
 }
 
-document.getElementById("roleText").innerText = "Role: " + role;
+/* REAL-TIME LIST */
+db.collection("payments").onSnapshot(snapshot => {
+  let list = document.getElementById("list");
+  list.innerHTML = "";
 
-const menu = document.getElementById("menu");
-const content = document.getElementById("content");
+  snapshot.forEach(doc => {
+    let d = doc.data();
 
-/* ROLE SYSTEM */
-if (role === "admin") {
-  menu.innerHTML = `
-    <button onclick="load('Users')">Manage Users</button>
-    <button onclick="load('Reports')">Reports</button>
-  `;
-}
-else if (role === "rider") {
-  menu.innerHTML = `
-    <button onclick="load('Deliveries')">My Deliveries</button>
-    <button onclick="load('Status')">Update Status</button>
-  `;
-}
-else {
-  menu.innerHTML = `
-    <button onclick="load('Payments')">Payments</button>
-    <button onclick="load('History')">History</button>
-  `;
-}
-
-function load(page) {
-  content.innerHTML = `<h3>${page}</h3><p>Loading ${page} module...</p>`;
-}
-
-function logout() {
-  localStorage.clear();
-  window.location.href = "/index.html";
-}
+    list.innerHTML += `
+      <div class="card">
+        <b>${d.name}</b><br>
+        ₱${d.amount}<br>
+        Rider: ${d.assignedTo || "None"}<br>
+        Status: ${d.status}
+      </div>
+    `;
+  });
+});
 </script>
 
 </body>
