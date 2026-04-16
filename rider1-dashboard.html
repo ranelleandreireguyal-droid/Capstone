@@ -24,33 +24,6 @@ body {
   background-clip: text;
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.stat-box {
-  background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.stat-number {
-  font-size: 32px;
-  font-weight: 700;
-  color: #3b82f6;
-  margin-bottom: 5px;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #94a3b8;
-}
-
 .card {
   background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
   padding: 20px;
@@ -95,15 +68,9 @@ body {
   display: inline-block;
 }
 
-.status-pending {
-  background: #facc15;
-  color: #1f2937;
-}
-
-.status-paid {
-  background: #22c55e;
-  color: white;
-}
+.status-pending { background: #facc15; color: #1f2937; }
+.status-paid { background: #22c55e; color: white; }
+.status-none { background: #64748b; color: white; }
 
 .card-actions {
   display: flex;
@@ -121,24 +88,22 @@ button {
   transition: all 0.3s ease;
 }
 
-.btn-pending {
-  background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
-  color: #1f2937;
-}
-
-.btn-pending:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(250,204,21,0.3);
-}
-
-.btn-paid {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+.btn-collect {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
 }
 
-.btn-paid:hover {
+.btn-collect:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(34,197,94,0.3);
+  box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+}
+
+.note {
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
 }
 
 .no-data {
@@ -147,34 +112,26 @@ button {
   font-style: italic;
   padding: 40px 20px;
 }
+.logout {
+  display: inline-block;
+  margin-top: 20px;
+  color: #94a3b8;
+  text-decoration: none;
+}
+.logout:hover {
+  color: #f1f5f9;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">🚴 Rider 1 Dashboard</div>
-
-<div class="stats">
-  <div class="stat-box">
-    <div class="stat-number" id="totalCount">0</div>
-    <div class="stat-label">Assigned</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-number" id="pendingCount">0</div>
-    <div class="stat-label">Pending</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-number" id="paidCount">0</div>
-    <div class="stat-label">Completed</div>
-  </div>
-</div>
-
+<div class="header">Rider 1 Dashboard</div>
+<div class="note">Collect payment from customers, then cashier will confirm the payment as paid.</div>
 <div id="list"></div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
@@ -184,83 +141,53 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-
 const riderId = "Rider 1";
 
-function updateStatus(id, status) {
+function markCollected(id) {
   db.collection("payments").doc(id).update({
-    status: status
+    status: "Pending"
   });
 }
 
 db.collection("payments").onSnapshot(snapshot => {
   let list = document.getElementById("list");
   list.innerHTML = "";
-
-  let total = 0;
-  let pending = 0;
-  let paid = 0;
   let hasData = false;
 
   snapshot.forEach(doc => {
     let d = doc.data();
-
     if (d.assignedTo !== riderId) return;
 
     hasData = true;
-    total++;
-    
-    if (d.status === "Pending") pending++;
-    if (d.status === "Paid") paid++;
-
-    let statusClass = d.status === "Paid" ? "status-paid" : "status-pending";
-    let buttonClass = d.status === "Paid" ? "btn-pending" : "btn-paid";
-    let buttonText = d.status === "Paid" ? "Set Pending" : "Mark Paid";
-    let buttonStatus = d.status === "Paid" ? "Pending" : "Paid";
+    let statusClass = d.status === "Paid" ? "status-paid" : d.status === "Pending" ? "status-pending" : "status-none";
+    let actionButton = "";
+    if (d.status === "Paid") {
+      actionButton = `<div class=\"note\">Payment completed</div>`;
+    } else if (d.status === "Pending") {
+      actionButton = `<div class=\"note\">Collected - waiting cashier approval</div>`;
+    } else {
+      actionButton = `<button class=\"btn-collect\" onclick=\"markCollected('${doc.id}')\">Mark Collected</button>`;
+    }
 
     list.innerHTML += `
       <div class="card">
         <div class="card-info">
           <b>${d.name}</b>
-          <div>Amount: ₱${d.amount.toLocaleString()}</div>
-          <div>Status: <span class="status ${statusClass}">${d.status}</span></div>
+          <div>Amount: PHP ${Number(d.amount).toLocaleString()}</div>
+          <div>Status: <span class="status ${statusClass}">${d.status || 'No Payment'}</span></div>
         </div>
-        <div class="card-actions">
-          <button class="${buttonClass}" onclick="updateStatus('${doc.id}', '${buttonStatus}')">
-            ${buttonText}
-          </button>
-        </div>
+        <div class="card-actions">${actionButton}</div>
       </div>
     `;
   });
 
-  document.getElementById("totalCount").textContent = total;
-  document.getElementById("pendingCount").textContent = pending;
-  document.getElementById("paidCount").textContent = paid;
-
   if (!hasData) {
-    list.innerHTML = '<div class="no-data">No payments assigned to you yet</div>';
+    list.innerHTML = '<div class="no-data">No payments assigned to you yet.</div>';
   }
 });
 </script>
 
+<a class="logout" href="/index.html" onclick="localStorage.clear()">Logout</a>
+
 </body>
-</html>if (selectedRole === "admin") {
-  window.location.href = "/admin-dashboard.html";
-}
-
-else if (selectedRole === "rider1") {
-  window.location.href = "/rider1-dashboard.html";
-}
-
-else if (selectedRole === "rider2") {
-  window.location.href = "/rider2-dashboard.html";
-}
-
-else if (selectedRole === "rider3") {
-  window.location.href = "/rider3-dashboard.html";
-}
-
-else if (selectedRole === "cashier") {
-  window.location.href = "/cashier-dashboard.html";
-}
+</html>
