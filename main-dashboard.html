@@ -1,72 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Main Dashboard</title>
+<title>Kasipag Dashboard</title>
 
 <style>
 body {
-  margin:0;
-  font-family:Arial;
-  background:#0f172a;
-  color:white;
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
 }
 
 /* SIDEBAR */
 .sidebar {
-  width:220px;
-  height:100vh;
-  background:#111827;
-  position:fixed;
-  padding:20px;
+  width: 230px;
+  height: 100vh;
+  background: #111827;
+  position: fixed;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* LOGO STYLE */
+/* LOGO */
 .logo {
-  width:120px;
-  height:120px;
-  object-fit:contain;
-  display:block;
-  margin:0 auto 10px auto;
-  border-radius:20px;
-  background:#ffffff;
-  padding:12px;
-  border:2px solid #334155;
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  background: white;
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 10px;
 }
 
+/* BRAND */
 .brand {
-  text-align:center;
-  font-weight:bold;
-  margin-bottom:15px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-/* BUTTONS */
+/* ROLE TEXT */
+#roleText {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+/* MENU BUTTONS */
 .sidebar button {
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border:none;
-  border-radius:8px;
-  background:#1f2937;
-  color:white;
-  cursor:pointer;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  cursor: pointer;
 }
 
 .sidebar button:hover {
-  background:#374151;
+  background: #374151;
+}
+
+/* LOGOUT */
+.logout {
+  margin-top: auto;
+  background: #dc2626 !important;
 }
 
 /* MAIN */
 .main {
-  margin-left:240px;
-  padding:20px;
+  margin-left: 250px;
+  padding: 20px;
 }
 
+/* CARD */
 .card {
-  background:#1e293b;
-  padding:20px;
-  border-radius:12px;
-  margin-top:15px;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 15px;
 }
 </style>
 </head>
@@ -75,8 +90,8 @@ body {
 
 <div class="sidebar">
 
-  <!-- 🔥 LOGO HERE -->
-  <img src="./picture/download (1).png" class="logo" alt="Kasipag Logo">
+  <!-- LOGO FIXED -->
+  <img src="./picture/kasipag-logo.png" class="logo" alt="Kasipag Logo">
 
   <div class="brand">KASIPAG</div>
 
@@ -84,7 +99,7 @@ body {
 
   <div id="menu"></div>
 
-  <button onclick="logout()">Logout</button>
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 <div class="main">
@@ -98,7 +113,7 @@ body {
 <script>
 const role = localStorage.getItem("role");
 
-// protection
+/* PROTECTION */
 if (!role) {
   window.location.href = "/index.html";
 }
@@ -108,28 +123,31 @@ document.getElementById("roleText").innerText = "Role: " + role;
 const menu = document.getElementById("menu");
 const content = document.getElementById("content");
 
-// role menus
+/* ROLE BASED MENU */
 if (role === "admin") {
   menu.innerHTML = `
-    <button onclick="load('users')">Manage Users</button>
-    <button onclick="load('reports')">Reports</button>
+    <button onclick="load('Users')">Manage Users</button>
+    <button onclick="load('Reports')">Reports</button>
   `;
 }
 else if (role === "rider") {
   menu.innerHTML = `
-    <button onclick="load('deliveries')">My Deliveries</button>
-    <button onclick="load('status')">Update Status</button>
+    <button onclick="load('Deliveries')">My Deliveries</button>
+    <button onclick="load('Status')">Update Status</button>
   `;
 }
 else {
   menu.innerHTML = `
-    <button onclick="load('payments')">Payments</button>
-    <button onclick="load('history')">History</button>
+    <button onclick="load('Payments')">Payments</button>
+    <button onclick="load('History')">History</button>
   `;
 }
 
 function load(page) {
-  content.innerHTML = "<h3>" + page + "</h3>";
+  content.innerHTML = `
+    <h3>${page}</h3>
+    <p>Loading ${page} module...</p>
+  `;
 }
 
 function logout() {
