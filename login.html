@@ -71,36 +71,43 @@ function login() {
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
 
-  let selectedRole = localStorage.getItem("selectedRole");
+  let foundRole = null;
 
-  // ❌ NO ROLE SELECTED
-  if (!selectedRole) {
-    alert("Please select a role first.");
-    window.location.href = "/index.html";
+  // 🔥 AUTO DETECT ROLE BASED ON CREDENTIALS
+  for (const role in accounts) {
+    if (accounts[role].user === u && accounts[role].pass === p) {
+      foundRole = role;
+      break;
+    }
+  }
+
+  if (!foundRole) {
+    alert("Invalid username or password");
     return;
   }
 
-  const acc = accounts[selectedRole];
+  localStorage.setItem("role", foundRole);
+  localStorage.setItem("currentUser", foundRole);
 
-  // ❌ INVALID ROLE
-  if (!acc) {
-    alert("Invalid role selected.");
-    localStorage.removeItem("selectedRole");
-    window.location.href = "/index.html";
-    return;
+  // 🚀 ROUTING FIX
+  if (foundRole === "admin") {
+    window.location.href = "/admin-dashboard.html";
   }
 
-  // ✅ LOGIN CHECK
-  if (u === acc.user && p === acc.pass) {
+  else if (foundRole === "rider1") {
+    window.location.href = "/rider1-dashboard.html";
+  }
 
-    localStorage.setItem("role", selectedRole);
-    localStorage.setItem("currentUser", selectedRole);
+  else if (foundRole === "rider2") {
+    window.location.href = "/rider2-dashboard.html";
+  }
 
-    // 🔥 FIXED ROUTING
-    window.location.href = `/${selectedRole}-dashboard.html`;
+  else if (foundRole === "rider3") {
+    window.location.href = "/rider3-dashboard.html";
+  }
 
-  } else {
-    alert("Invalid username or password for " + selectedRole);
+  else if (foundRole === "cashier") {
+    window.location.href = "/cashier-dashboard.html";
   }
 }
 </script>
