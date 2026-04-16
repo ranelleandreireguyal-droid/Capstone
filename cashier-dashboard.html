@@ -1,15 +1,97 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8">
+<title>Cashier Dashboard</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pending { color: #facc15; font-weight: bold; }
+.paid { color: #22c55e; font-weight: bold; }
+.none { color: #ef4444; font-weight: bold; }
+</style>
+</head>
+
 <body>
 
 <script>
 if (localStorage.getItem("role") !== "cashier") {
   window.location.href = "/index.html";
 }
+
+let customers = JSON.parse(localStorage.getItem("payments")) || [];
+
+function save() {
+  localStorage.setItem("payments", JSON.stringify(customers));
+}
+
+function render() {
+  let list = document.getElementById("list");
+  list.innerHTML = "";
+
+  customers.forEach((c, i) => {
+
+    let color = "";
+    if (c.status === "Paid") color = "paid";
+    else if (c.status === "Pending") color = "pending";
+    else color = "none";
+
+    list.innerHTML += `
+      <div class="card">
+        <div>
+          <strong>${c.name}</strong><br>
+          <span class="${color}">${c.status}</span>
+        </div>
+
+        <div>
+          ${c.status === "Pending" ? `
+            <button onclick="confirmPay(${i})" style="background:#22c55e;">
+              Confirm Payment
+            </button>
+          ` : ``}
+        </div>
+      </div>
+    `;
+  });
+}
+
+function confirmPay(index) {
+  customers[index].status = "Paid";
+  save();
+  render();
+}
+
+render();
 </script>
 
 <h1>Cashier Dashboard</h1>
-<p>Only cashier can access this</p>
+<p>Confirm rider payments here</p>
+
+<div id="list"></div>
 
 <a href="/index.html" onclick="localStorage.clear()">Logout</a>
 

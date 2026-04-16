@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html>
-<body>
-
 <script>
-if (localStorage.getItem("role") !== "rider") {
-  window.location.href = "/index.html";
+let customers = JSON.parse(localStorage.getItem("payments")) || [
+  { name: "Juan Dela Cruz", status: "No Payment" },
+  { name: "Maria Santos", status: "No Payment" }
+];
+
+function save() {
+  localStorage.setItem("payments", JSON.stringify(customers));
 }
 </script>
-
-<h1>Rider Dashboard</h1>
-<p>Only rider can access this</p>
-
-<a href="/index.html" onclick="localStorage.clear()">Logout</a>
-
-</body>
-</html>
