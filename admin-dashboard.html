@@ -1,15 +1,140 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input, select, button {
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  margin-top: 5px;
+}
+
+button {
+  cursor: pointer;
+}
+</style>
+</head>
+
 <body>
 
 <script>
 if (localStorage.getItem("role") !== "admin") {
   window.location.href = "/index.html";
 }
+
+/* SHARED DATA */
+let customers = JSON.parse(localStorage.getItem("payments")) || [];
+
+/* SAVE */
+function save() {
+  localStorage.setItem("payments", JSON.stringify(customers));
+}
+
+/* ADD CUSTOMER */
+function addCustomer() {
+  let name = document.getElementById("name").value;
+  let amount = document.getElementById("amount").value;
+
+  if (!name || !amount) return alert("Fill all fields");
+
+  customers.push({
+    name: name,
+    amount: amount,
+    assignedTo: "",
+    status: "No Payment"
+  });
+
+  save();
+  render();
+}
+
+/* ASSIGN RIDER */
+function assignRider(index, rider) {
+  customers[index].assignedTo = rider;
+  save();
+  render();
+}
+
+/* DELETE */
+function removeCustomer(index) {
+  customers.splice(index, 1);
+  save();
+  render();
+}
+
+/* RENDER */
+function render() {
+  let list = document.getElementById("list");
+  list.innerHTML = "";
+
+  customers.forEach((c, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <div>
+          <strong>${c.name}</strong><br>
+          ₱${c.amount}<br>
+          Assigned: ${c.assignedTo || "None"}<br>
+          Status: ${c.status}
+        </div>
+
+        <div>
+          <select onchange="assignRider(${i}, this.value)">
+            <option value="">Assign Rider</option>
+            <option value="rider1">Rider 1</option>
+            <option value="rider2">Rider 2</option>
+          </select>
+
+          <br><br>
+
+          <button onclick="removeCustomer(${i})" style="background:red;color:white;">
+            Delete
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+render();
 </script>
 
 <h1>Admin Dashboard</h1>
-<p>Only admin can access this</p>
+
+<!-- ADD CUSTOMER -->
+<div class="card">
+  <div>
+    <input id="name" placeholder="Customer Name"><br>
+    <input id="amount" placeholder="Amount">
+  </div>
+
+  <button onclick="addCustomer()" style="background:#22c55e;">
+    Add Customer
+  </button>
+</div>
+
+<!-- LIST -->
+<div id="list"></div>
 
 <a href="/index.html" onclick="localStorage.clear()">Logout</a>
 
