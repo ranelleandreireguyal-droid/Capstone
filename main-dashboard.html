@@ -7,14 +7,14 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial;
-  background: #0f172a;
+  font-family: Arial, sans-serif;
+  background: #0b1220;
   color: white;
 }
 
 /* SIDEBAR */
 .sidebar {
-  width: 230px;
+  width: 240px;
   height: 100vh;
   background: #111827;
   position: fixed;
@@ -34,20 +34,22 @@ body {
   border-radius: 12px;
   margin-bottom: 10px;
 }
+
 /* BRAND */
 .brand {
   font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* ROLE TEXT */
-#roleText {
-  font-size: 14px;
-  color: #9ca3af;
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
-/* MENU BUTTONS */
+/* ROLE */
+#roleText {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 15px;
+}
+
+/* MENU */
 .sidebar button {
   width: 100%;
   padding: 10px;
@@ -57,10 +59,12 @@ body {
   background: #1f2937;
   color: white;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .sidebar button:hover {
   background: #374151;
+  transform: scale(1.03);
 }
 
 /* LOGOUT */
@@ -71,16 +75,29 @@ body {
 
 /* MAIN */
 .main {
-  margin-left: 250px;
-  padding: 20px;
+  margin-left: 260px;
+  padding: 25px;
 }
 
-/* CARD */
+/* CARDS */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
 .card {
   background: #1e293b;
   padding: 20px;
   border-radius: 12px;
-  margin-top: 15px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  background: #24324a;
 }
 </style>
 </head>
@@ -89,8 +106,8 @@ body {
 
 <div class="sidebar">
 
-  <!-- LOGO FIXED -->
   <img src="./picture/logo.png" class="logo" alt="Kasipag Logo">
+
   <div class="brand">KASIPAG</div>
 
   <p id="roleText"></p>
@@ -103,7 +120,13 @@ body {
 <div class="main">
   <h1>Dashboard</h1>
 
-  <div id="content" class="card">
+  <div class="card-container">
+    <div class="card">Total Users</div>
+    <div class="card">Active Loans</div>
+    <div class="card">Payments</div>
+  </div>
+
+  <div id="content" class="card" style="margin-top:20px;">
     Welcome to Kasipag System
   </div>
 </div>
@@ -111,7 +134,6 @@ body {
 <script>
 const role = localStorage.getItem("role");
 
-/* PROTECTION */
 if (!role) {
   window.location.href = "/index.html";
 }
@@ -121,7 +143,7 @@ document.getElementById("roleText").innerText = "Role: " + role;
 const menu = document.getElementById("menu");
 const content = document.getElementById("content");
 
-/* ROLE BASED MENU */
+/* ROLE SYSTEM */
 if (role === "admin") {
   menu.innerHTML = `
     <button onclick="load('Users')">Manage Users</button>
@@ -142,10 +164,7 @@ else {
 }
 
 function load(page) {
-  content.innerHTML = `
-    <h3>${page}</h3>
-    <p>Loading ${page} module...</p>
-  `;
+  content.innerHTML = `<h3>${page}</h3><p>Loading ${page} module...</p>`;
 }
 
 function logout() {
