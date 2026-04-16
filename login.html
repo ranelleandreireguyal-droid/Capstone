@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Secure Login</title>
 
   <style>
     body {
@@ -42,6 +42,11 @@
       color: white;
       cursor: pointer;
     }
+
+    .role {
+      margin-bottom: 10px;
+      color: #cbd5e1;
+    }
   </style>
 </head>
 
@@ -50,28 +55,52 @@
 <div class="box">
   <h2>Login</h2>
 
-  <input id="u" placeholder="username">
-  <input id="p" type="password" placeholder="password">
+  <div class="role" id="roleText"></div>
+
+  <input id="username" placeholder="username">
+  <input id="password" type="password" placeholder="password">
 
   <button onclick="login()">Login</button>
 </div>
 
 <script>
-function login() {
-  const role = localStorage.getItem("selectedRole");
+const selectedRole = localStorage.getItem("selectedRole");
+document.getElementById("roleText").innerText = "Role: " + selectedRole;
 
-  if (!role) {
-    window.location.href = "/index.html";
+/*
+  DEMO ACCOUNTS (PALITAN MO SA DATABASE LATER)
+*/
+const users = [
+  { user: "admin1", pass: "1234", role: "admin" },
+  { user: "rider1", pass: "1234", role: "rider" },
+  { user: "cashier1", pass: "1234", role: "cashier" }
+];
+
+function login() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+
+  const foundUser = users.find(x => x.user === u && x.pass === p);
+
+  if (!foundUser) {
+    alert("Invalid credentials");
     return;
   }
 
-  localStorage.setItem("role", role);
+  // 🚨 ROLE CHECK (IMPORTANT SECURITY)
+  if (foundUser.role !== selectedRole) {
+    alert("Access denied! This account is not allowed for this role.");
+    return;
+  }
 
-  // SAFE ROUTING (NO ./, NO ERROR)
-  if (role === "admin") {
+  // SAVE SESSION
+  localStorage.setItem("role", foundUser.role);
+
+  // REDIRECT SAFE
+  if (foundUser.role === "admin") {
     window.location.href = "/admin-dashboard.html";
   }
-  else if (role === "rider") {
+  else if (foundUser.role === "rider") {
     window.location.href = "/rider-dashboard.html";
   }
   else {
