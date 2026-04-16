@@ -44,12 +44,12 @@
 </div>
 
 <script>
-const SUPABASE_URL = "https://gbttezmevcmavaeeerdk.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdidHRlem1ldmNtYXZhZWVlcmRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMDExODksImV4cCI6MjA5MTg3NzE4OX0.mWB0bUWtUyi8W2z0NgCu5GictFbW4wKFM142lN705pM";
-
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+
+  console.log("Email:", email);
+  console.log("Password:", password);
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}&password=eq.${password}`, {
     headers: {
@@ -59,6 +59,8 @@ async function login() {
   });
 
   const data = await res.json();
+
+  console.log("Result:", data);
 
   if (data.length > 0) {
     const role = data[0].role;
