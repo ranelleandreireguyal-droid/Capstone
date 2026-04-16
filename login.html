@@ -9,11 +9,11 @@
       margin: 0;
       font-family: Arial;
       background: #0f172a;
-      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      color: white;
     }
 
     .box {
@@ -50,38 +50,33 @@
 <div class="box">
   <h2>Login</h2>
 
-  <p id="roleText"></p>
-
-  <input type="text" id="user" placeholder="Username">
-  <input type="password" id="pass" placeholder="Password">
+  <input id="u" placeholder="username">
+  <input id="p" type="password" placeholder="password">
 
   <button onclick="login()">Login</button>
 </div>
 
 <script>
-const role = localStorage.getItem("selectedRole");
-document.getElementById("roleText").innerText = "Role: " + role;
-
 function login() {
-  const user = document.getElementById("user").value;
-  const pass = document.getElementById("pass").value;
+  const role = localStorage.getItem("selectedRole");
 
-  if (!user || !pass) {
-    alert("Fill all fields");
+  if (!role) {
+    window.location.href = "/index.html";
     return;
   }
 
-  // SAVE ROLE AFTER LOGIN
   localStorage.setItem("role", role);
 
-  // FIXED SAFE ROUTING
-  const routes = {
-    admin: "./admin-dashboard.html",
-    rider: "./rider-dashboard.html",
-    cashier: "./cashier-dashboard.html"
-  };
-
-  window.location.href = routes[role] || "./index.html";
+  // SAFE ROUTING (NO ./, NO ERROR)
+  if (role === "admin") {
+    window.location.href = "/admin-dashboard.html";
+  }
+  else if (role === "rider") {
+    window.location.href = "/rider-dashboard.html";
+  }
+  else {
+    window.location.href = "/cashier-dashboard.html";
+  }
 }
 </script>
 

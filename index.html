@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Kasipag System</title>
+  <title>Kasipag App</title>
 
   <style>
     body {
@@ -10,9 +10,9 @@
       font-family: Arial;
       background: #0f172a;
       display: flex;
-      height: 100vh;
       justify-content: center;
       align-items: center;
+      height: 100vh;
       color: white;
     }
 
@@ -43,25 +43,17 @@
 
 <div class="box">
   <h2>Kasipag App</h2>
-  <p>Select Role</p>
 
-  <button class="a" onclick="selectRole('admin')">Admin</button>
-  <button class="b" onclick="selectRole('rider')">Rider</button>
-  <button class="c" onclick="selectRole('cashier')">Cashier</button>
+  <button class="a" onclick="go('admin')">Admin</button>
+  <button class="b" onclick="go('rider')">Rider</button>
+  <button class="c" onclick="go('cashier')">Cashier</button>
 </div>
 
 <script>
-function selectRole(role) {
+function go(role) {
   localStorage.setItem("selectedRole", role);
-  window.location.href = "./login.html";
+  window.location.href = "/login.html";
 }
-
-// auto redirect if logged in
-const role = localStorage.getItem("role");
-
-if (role === "admin") window.location.href = "./admin-dashboard.html";
-if (role === "rider") window.location.href = "./rider-dashboard.html";
-if (role === "cashier") window.location.href = "./cashier-dashboard.html";
 </script>
 
 </body>
