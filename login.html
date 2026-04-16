@@ -71,12 +71,11 @@ function login() {
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
 
-  // 🔥 FIX: safe role retrieval
   let selectedRole = localStorage.getItem("selectedRole");
 
-  // ❌ NO ROLE → FORCE BACK
+  // ❌ NO ROLE SELECTED
   if (!selectedRole) {
-    alert("Walang role selected. Redirecting to role selection.");
+    alert("Please select a role first.");
     window.location.href = "/index.html";
     return;
   }
@@ -85,7 +84,7 @@ function login() {
 
   // ❌ INVALID ROLE
   if (!acc) {
-    alert("Invalid role detected. Please select again.");
+    alert("Invalid role selected.");
     localStorage.removeItem("selectedRole");
     window.location.href = "/index.html";
     return;
@@ -97,25 +96,11 @@ function login() {
     localStorage.setItem("role", selectedRole);
     localStorage.setItem("currentUser", selectedRole);
 
-    // 🔥 REDIRECT FIXED
-    if (selectedRole === "admin") {
-      window.location.href = "/admin-dashboard.html";
-    }
-
-    else if (
-      selectedRole === "rider1" ||
-      selectedRole === "rider2" ||
-      selectedRole === "rider3"
-    ) {
-      window.location.href = "/rider-dashboard.html";
-    }
-
-    else if (selectedRole === "cashier") {
-      window.location.href = "/cashier-dashboard.html";
-    }
+    // 🔥 FIXED ROUTING
+    window.location.href = `/${selectedRole}-dashboard.html`;
 
   } else {
-    alert("Invalid credentials for " + selectedRole);
+    alert("Invalid username or password for " + selectedRole);
   }
 }
 </script>

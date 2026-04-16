@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Rider Dashboard</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0b1220;
+  color: white;
+  padding: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.pending { color: #facc15; }
+.paid { color: #22c55e; }
+</style>
+</head>
+
+<body>
+
+<h2>🚴 Rider Dashboard</h2>
+
+<div id="list"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+// FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* 🔥 SET RIDER ACCOUNT HERE */
+const riderId = "rider1"; 
+// change to "rider2" or "rider3" per account
+
+/* UPDATE STATUS */
+function updateStatus(id, status) {
+  db.collection("payments").doc(id).update({
+    status: status
+  });
+}
+
+/* REALTIME + FILTERED DATA */
+db.collection("payments").onSnapshot(snapshot => {
+  let list = document.getElementById("list");
+  list.innerHTML = "";
+
+  snapshot.forEach(doc => {
+    let d = doc.data();
+
+    // 🔥 FILTER: ONLY ASSIGNED TO THIS RIDER
+    if (d.assignedTo !== riderId) return;
+
+    let color = d.status === "Paid" ? "paid" : "pending";
+
+    list.innerHTML += `
+      <div class="card">
+        <b>${d.name}</b><br>
+        ₱${d.amount}<br>
+        Status: <span class="${color}">${d.status}</span><br><br>
+
+        <button onclick="updateStatus('${doc.id}', 'Pending')" style="background:#facc15;">
+          Set Pending
+        </button>
+
+        <button onclick="updateStatus('${doc.id}', 'Paid')" style="background:#22c55e;">
+          Mark Paid
+        </button>
+      </div>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>
