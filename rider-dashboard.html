@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
 <body>
+
+<script>
+if (localStorage.getItem("role") !== "rider") {
+  window.location.href = "/index.html";
+}
+</script>
+
 <h1>Rider Dashboard</h1>
-<a href="/index.html">Logout</a>
+<p>Only rider can access this</p>
+
+<a href="/index.html" onclick="localStorage.clear()">Logout</a>
+
 </body>
 </html>

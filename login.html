@@ -1,43 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+.box {
+  background:#111827;
+  padding:30px;
+  border-radius:15px;
+  width:300px;
+  text-align:center;
+}
+input {
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:8px;
+  border:none;
+}
+button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Login</h2>
+
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+</div>
+
 <script>
 const selectedRole = localStorage.getItem("selectedRole");
 
-/*
-  🔒 ONE ACCOUNT PER ROLE
-  (Pwede mo palitan username/password)
-*/
+// 🔒 ONE ACCOUNT PER ROLE
 const accounts = {
   admin:   { user: "admin",   pass: "admin123" },
   rider:   { user: "rider",   pass: "rider123" },
   cashier: { user: "cashier", pass: "cash123" }
 };
 
-function login() {
+function login(){
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
 
   if (!selectedRole) {
-    alert("No role selected!");
     window.location.href = "/index.html";
     return;
   }
 
   const acc = accounts[selectedRole];
 
-  // 🔥 STRICT MATCH (ROLE + ACCOUNT)
   if (u === acc.user && p === acc.pass) {
     localStorage.setItem("role", selectedRole);
 
-    // redirect
-    if (selectedRole === "admin") {
-      window.location.href = "/admin-dashboard.html";
-    } else if (selectedRole === "rider") {
-      window.location.href = "/rider-dashboard.html";
-    } else {
-      window.location.href = "/cashier-dashboard.html";
-    }
+    // 👉 ONE DASHBOARD LANG
+    window.location.href = "/main-dashboard.html";
 
   } else {
-    alert("Invalid credentials for " + selectedRole + " account!");
+    alert("Invalid credentials for " + selectedRole);
   }
 }
 </script>
+
+</body>
+</html>

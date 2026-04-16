@@ -1,42 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Kasipag App</title>
+<meta charset="UTF-8">
+<title>Kasipag App</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0f172a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: white;
-    }
-
-    .box {
-      background: #111827;
-      padding: 30px;
-      border-radius: 15px;
-      width: 320px;
-      text-align: center;
-    }
-
-    button {
-      width: 100%;
-      margin: 8px 0;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .a { background: #ef4444; color: white; }
-    .b { background: #22c55e; color: white; }
-    .c { background: #3b82f6; color: white; }
-  </style>
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+.box {
+  background:#111827;
+  padding:30px;
+  border-radius:15px;
+  width:320px;
+  text-align:center;
+}
+button {
+  width:100%;
+  margin:8px 0;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+.a { background:#ef4444; color:white; }
+.b { background:#22c55e; color:white; }
+.c { background:#3b82f6; color:white; }
+</style>
 </head>
 
 <body>
@@ -50,7 +47,7 @@
 </div>
 
 <script>
-function go(role) {
+function go(role){
   localStorage.setItem("selectedRole", role);
   window.location.href = "/login.html";
 }
