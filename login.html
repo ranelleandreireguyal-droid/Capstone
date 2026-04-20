@@ -15,52 +15,31 @@ body {
   justify-content:center;
   align-items:center;
   height:100vh;
-  overflow:hidden;
-  color:#1e293b;
-  position:relative;
-}
-
-/* background glow */
-body::before {
-  content:'';
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:
-    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.15), transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(168,85,247,0.15), transparent 50%);
-  pointer-events:none;
 }
 
 .box {
-  background:rgba(255,255,255,0.95);
+  background:#fff;
   padding:50px;
-  border-radius:25px;
+  border-radius:20px;
   width:400px;
   text-align:center;
-  box-shadow:0 25px 80px rgba(0,0,0,0.15);
-  animation:fadeIn 0.8s ease;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+  animation:fadeIn 0.6s ease;
 }
 
 @keyframes fadeIn {
-  from {opacity:0; transform:translateY(-30px);}
+  from {opacity:0; transform:translateY(-20px);}
   to {opacity:1; transform:translateY(0);}
 }
 
-.logo {
-  font-size:45px;
-  margin-bottom:10px;
-}
-
 h2 {
-  margin:10px 0;
-  font-size:28px;
+  margin-bottom:10px;
 }
 
 .subtitle {
   font-size:14px;
   color:#64748b;
-  margin-bottom:25px;
+  margin-bottom:20px;
 }
 
 input {
@@ -70,13 +49,10 @@ input {
   border-radius:10px;
   border:1px solid #cbd5e1;
   outline:none;
-  font-size:15px;
-  transition:0.3s;
 }
 
 input:focus {
   border-color:#3b82f6;
-  box-shadow:0 0 0 3px rgba(59,130,246,0.2);
 }
 
 button {
@@ -85,25 +61,19 @@ button {
   margin-top:15px;
   border:none;
   border-radius:10px;
-  background:linear-gradient(135deg, #3b82f6, #2563eb);
+  background:#3b82f6;
   color:white;
   font-weight:600;
-  font-size:16px;
   cursor:pointer;
-  transition:0.3s;
 }
 
 button:hover {
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(59,130,246,0.3);
+  background:#2563eb;
 }
 
-.back {
+a {
+  display:block;
   margin-top:15px;
-  font-size:14px;
-}
-
-.back a {
   color:#3b82f6;
   text-decoration:none;
 }
@@ -113,18 +83,15 @@ button:hover {
 <body>
 
 <div class="box">
-  <div class="logo">🔐</div>
-  <h2>Kasipag Login</h2>
-  <div class="subtitle">Microfinance Access Portal</div>
+  <h2>🔐 Kasipag Login</h2>
+  <div class="subtitle">Microfinance System Access</div>
 
-  <input id="username" placeholder="Username">
+  <input id="username" placeholder="Username / Email">
   <input id="password" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
 
-  <div class="back">
-    <a href="index.html">← Back to Home</a>
-  </div>
+  <a href="index.html">← Back to Home</a>
 </div>
 
 <!-- FIREBASE -->
@@ -137,67 +104,82 @@ const firebaseConfig = {
   apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
   authDomain: "kasipag-app.firebaseapp.com",
   projectId: "kasipag-app",
-  storageBucket: "kasipag-app.appspot.com",
-  messagingSenderId: "442166485005",
-  appId: "1:442166485005:web:ed07396b8a59006efa3544"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// 🔐 LOGIN SYSTEM (SUPER ADMIN READY)
+// 🔐 LOGIN FUNCTION (SUPER ADMIN READY)
 function login() {
-  const u = username.value.trim();
-  const p = password.value.trim();
+  const input = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
 
-  if (!u || !p) {
-    alert("Please fill in all fields");
+  if (!input || !pass) {
+    alert("Please fill all fields");
     return;
   }
 
+  // 🔍 check email OR username
   db.collection("users")
-    .where("username", "==", u)
-    .where("password", "==", p)
+    .where("password", "==", pass)
     .get()
-    .then(snap => {
+    .then(snapshot => {
 
-      if (snap.empty) {
-        alert("Invalid username or password");
+      if (snapshot.empty) {
+        alert("Invalid credentials");
         return;
       }
 
-      let user = snap.docs[0].data();
+      let user = null;
+
+      snapshot.forEach(doc => {
+        let data = doc.data();
+        if (data.username === input || data.email === input) {
+          user = data;
+        }
+      });
+
+      if (!user) {
+        alert("User not found");
+        return;
+      }
 
       localStorage.setItem("role", user.role);
       localStorage.setItem("username", user.username);
 
-      // 🚀 ROLE ROUTING (NO SLASH)
-      if (user.role === "superadmin") {
-        window.location.href = "super-admin.html";
-      }
+      // 🚀 ROLE ROUTING
+      switch(user.role) {
 
-      else if (user.role === "admin") {
-        window.location.href = "admin-dashboard.html";
-      }
+        case "superadmin":
+          window.location.href = "super-admin.html";
+          break;
 
-      else if (user.role === "cashier") {
-        window.location.href = "cashier-dashboard.html";
-      }
+        case "admin":
+          window.location.href = "admin-dashboard.html";
+          break;
 
-      else if (user.role === "rider") {
-        window.location.href = "rider-dashboard.html";
+        case "cashier":
+          window.location.href = "cashier-dashboard.html";
+          break;
+
+        case "rider":
+          window.location.href = "rider-dashboard.html";
+          break;
+
+        default:
+          alert("Unknown role");
       }
 
     })
     .catch(err => {
-      console.error(err);
+      console.log(err);
       alert("Database error");
     });
 }
 
-// ENTER KEY SUPPORT
-document.addEventListener("keydown", function(e){
-  if(e.key === "Enter") login();
+// ENTER KEY
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
 });
 </script>
 
