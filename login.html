@@ -4,70 +4,50 @@
 <meta charset="UTF-8">
 <title>Kasipag Login</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
 <style>
-body {
+body{
   margin:0;
-  font-family:'Inter', Arial, sans-serif;
-  background:linear-gradient(135deg, #f8fafc, #e2e8f0);
+  font-family:Arial;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
+  color:white;
 }
 
-.box {
-  background:#fff;
+.box{
+  background:#111827;
   padding:40px;
-  border-radius:20px;
-  width:380px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+  border-radius:15px;
+  width:350px;
   text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
 }
 
-h2 { margin-bottom:10px; }
-
-.subtitle {
-  font-size:14px;
-  color:#64748b;
-  margin-bottom:20px;
-}
-
-input {
+input{
   width:100%;
-  padding:14px;
-  margin:10px 0;
-  border-radius:10px;
-  border:1px solid #cbd5e1;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
   outline:none;
 }
 
-input:focus {
-  border-color:#3b82f6;
-}
-
-button {
+button{
   width:100%;
-  padding:14px;
-  margin-top:15px;
+  padding:12px;
+  margin-top:10px;
   border:none;
-  border-radius:10px;
+  border-radius:8px;
   background:#3b82f6;
   color:white;
-  font-weight:600;
+  font-weight:bold;
   cursor:pointer;
 }
 
-button:hover {
+button:hover{
   background:#2563eb;
-}
-
-a {
-  display:block;
-  margin-top:15px;
-  color:#3b82f6;
-  text-decoration:none;
 }
 </style>
 </head>
@@ -75,99 +55,66 @@ a {
 <body>
 
 <div class="box">
-  <h2>🔐 Kasipag Login</h2>
-  <div class="subtitle">Microfinance System</div>
+  <h2>Kasipag Login</h2>
 
-  <input id="username" placeholder="Username / Email">
+  <input id="username" placeholder="Username">
   <input id="password" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
-
-  <a href="index.html">← Back to Home</a>
 </div>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
 <script>
-// 🔥 FIREBASE CONFIG (FIXED)
-const firebaseConfig = {
-  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
-  authDomain: "kasipag-app.firebaseapp.com",
-  projectId: "kasipag-app",
-  storageBucket: "kasipag-app.appspot.com",
-  messagingSenderId: "442166485005",
-  appId: "1:442166485005:web:ed07396b8a59006efa3544",
-  measurementId: "G-SJQKE0F3H0"
+// 👑 OFFLINE ACCOUNTS
+const accounts = {
+  admin: {
+    password: "admin123",
+    role: "admin"
+  },
+  superadmin: {
+    password: "super123",
+    role: "superadmin"
+  },
+  cashier: {
+    password: "cash123",
+    role: "cashier"
+  },
+  rider: {
+    password: "rider123",
+    role: "rider"
+  }
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+function login(){
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
 
-// 🔥 LOGIN FUNCTION (FIXED LOGIC)
-function login() {
-  const input = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
-
-  if (!input || !pass) {
-    alert("Please fill all fields");
+  if(!u || !p){
+    alert("Fill all fields");
     return;
   }
 
-  db.collection("users").get()
-    .then(snapshot => {
+  if(accounts[u] && accounts[u].password === p){
 
-      let user = null;
+    localStorage.setItem("role", accounts[u].role);
 
-      snapshot.forEach(doc => {
-        let d = doc.data();
+    // 🚀 ROUTING
+    if(accounts[u].role === "superadmin"){
+      window.location.href = "super-admin.html";
+    }
+    else if(accounts[u].role === "admin"){
+      window.location.href = "admin-dashboard.html";
+    }
+    else if(accounts[u].role === "cashier"){
+      window.location.href = "cashier-dashboard.html";
+    }
+    else if(accounts[u].role === "rider"){
+      window.location.href = "rider-dashboard.html";
+    }
 
-        if (
-          (d.username === input || d.email === input) &&
-          d.password === pass
-        ) {
-          user = d;
-        }
-      });
-
-      if (!user) {
-        alert("Invalid login");
-        return;
-      }
-
-      // save session
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("username", user.username);
-
-      // redirect
-      if (user.role === "superadmin") {
-        window.location.href = "super-admin.html";
-      }
-      else if (user.role === "admin") {
-        window.location.href = "admin-dashboard.html";
-      }
-      else if (user.role === "cashier") {
-        window.location.href = "cashier-dashboard.html";
-      }
-      else if (user.role === "rider") {
-        window.location.href = "rider-dashboard.html";
-      }
-      else {
-        alert("Unknown role");
-      }
-
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Firebase error");
-    });
+  } else {
+    alert("Invalid login");
+  }
 }
-
-// ENTER KEY SUPPORT
-document.addEventListener("keydown", e => {
-  if (e.key === "Enter") login();
-});
 </script>
 
 </body>
