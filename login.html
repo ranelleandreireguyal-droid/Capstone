@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Kasipag Login</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -10,160 +11,101 @@ body {
   margin:0;
   font-family:'Inter', Arial, sans-serif;
   background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
-  background-attachment:fixed;
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
-  color:#1e293b;
   overflow:hidden;
+  color:#1e293b;
   position:relative;
 }
 
+/* background glow */
 body::before {
   content:'';
   position:absolute;
-  top:0;
-  left:0;
   width:100%;
   height:100%;
-  background-image:
-    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(168,85,247,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(6,182,212,0.1) 0%, transparent 50%);
+  background:
+    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.15), transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(168,85,247,0.15), transparent 50%);
   pointer-events:none;
 }
 
 .box {
-  background:linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.95);
   padding:50px;
   border-radius:25px;
   width:400px;
   text-align:center;
-  box-shadow:0 25px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8);
-  position:relative;
-  animation:slideIn 0.8s ease-out;
-  border:1px solid rgba(0,0,0,0.1);
+  box-shadow:0 25px 80px rgba(0,0,0,0.15);
+  animation:fadeIn 0.8s ease;
 }
 
-@keyframes slideIn {
-  from { opacity:0; transform:translateY(-40px) scale(0.95); }
-  to { opacity:1; transform:translateY(0) scale(1); }
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-30px);}
+  to {opacity:1; transform:translateY(0);}
 }
 
-.logo-icon {
-  width:90px;
-  height:90px;
-  margin:0 auto 30px;
-  background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #7c3aed 100%);
-  border-radius:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.logo {
   font-size:45px;
-  box-shadow:0 15px 40px rgba(59,130,246,0.3), inset 0 2px 0 rgba(255,255,255,0.3);
-  animation:pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform:scale(1); }
-  50% { transform:scale(1.05); }
+  margin-bottom:10px;
 }
 
 h2 {
-  font-size:32px;
-  font-weight:700;
-  margin-bottom:10px;
-  background:linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  text-shadow:0 2px 4px rgba(0,0,0,0.1);
+  margin:10px 0;
+  font-size:28px;
 }
 
 .subtitle {
-  font-size:16px;
+  font-size:14px;
   color:#64748b;
-  margin-bottom:30px;
-  font-weight:400;
+  margin-bottom:25px;
 }
 
 input {
   width:100%;
-  padding:16px 20px;
-  margin:12px 0;
-  border-radius:12px;
-  border:1px solid rgba(0,0,0,0.1);
-  background:rgba(255,255,255,0.8);
-  color:#1e293b;
-  font-size:16px;
+  padding:14px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
   outline:none;
-  transition:all 0.3s ease;
-  box-sizing:border-box;
-  backdrop-filter:blur(10px);
-}
-
-input::placeholder {
-  color:#94a3b8;
-  font-weight:400;
+  font-size:15px;
+  transition:0.3s;
 }
 
 input:focus {
-  background:rgba(255,255,255,0.9);
   border-color:#3b82f6;
-  box-shadow:0 0 0 4px rgba(59,130,246,0.15), 0 4px 12px rgba(59,130,246,0.1);
-  transform:translateY(-1px);
+  box-shadow:0 0 0 3px rgba(59,130,246,0.2);
 }
 
 button {
   width:100%;
-  padding:16px 20px;
-  margin-top:25px;
+  padding:14px;
+  margin-top:15px;
   border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+  border-radius:10px;
+  background:linear-gradient(135deg, #3b82f6, #2563eb);
   color:white;
   font-weight:600;
   font-size:16px;
   cursor:pointer;
-  transition:all 0.3s ease;
-  box-shadow:0 10px 30px rgba(59,130,246,0.3), 0 0 0 1px rgba(255,255,255,0.2);
-  position:relative;
-  overflow:hidden;
-  backdrop-filter:blur(10px);
-}
-
-button::before {
-  content:'';
-  position:absolute;
-  top:0;
-  left:-100%;
-  width:100%;
-  height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition:left 0.6s;
-}
-
-button:hover::before {
-  left:100%;
+  transition:0.3s;
 }
 
 button:hover {
-  transform:translateY(-3px);
-  box-shadow:0 15px 40px rgba(59,130,246,0.5), 0 0 0 1px rgba(255,255,255,0.2);
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(59,130,246,0.3);
 }
 
-button:active {
-  transform:translateY(-1px);
+.back {
+  margin-top:15px;
+  font-size:14px;
 }
 
-.footer-text {
-  font-size:13px;
-  color:#64748b;
-  margin-top:30px;
-  opacity:0.8;
+.back a {
+  color:#3b82f6;
+  text-decoration:none;
 }
 </style>
 </head>
@@ -171,84 +113,91 @@ button:active {
 <body>
 
 <div class="box">
-  <div class="logo-icon">🔐</div>
+  <div class="logo">🔐</div>
   <h2>Kasipag Login</h2>
-  <div class="subtitle">Access your microfinancing dashboard</div>
+  <div class="subtitle">Microfinance Access Portal</div>
 
-  <input id="username" placeholder="Username" autocomplete="username">
-  <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
 
-  <div style="margin-top:20px; font-size:14px;">
-    <a href="/index.html" style="color:#3b82f6; text-decoration:none; transition:color 0.3s ease; display:inline-flex; align-items:center; gap:5px;">
-      <span style="font-size:16px;">←</span> Back to Home
-    </a>
+  <div class="back">
+    <a href="index.html">← Back to Home</a>
   </div>
-
-  <div class="footer-text">Demo: admin / admin123</div>
 </div>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
 <script>
-const accounts = {
-  admin:   { user: "admin",   pass: "admin123" },
-
-  rider1:  { user: "rider1",  pass: "rider123" },
-  rider2:  { user: "rider2",  pass: "rider123" },
-  rider3:  { user: "rider3",  pass: "rider123" },
-
-  cashier: { user: "cashier", pass: "cash123" }
+// 🔥 FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app",
+  storageBucket: "kasipag-app.appspot.com",
+  messagingSenderId: "442166485005",
+  appId: "1:442166485005:web:ed07396b8a59006efa3544"
 };
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 🔐 LOGIN SYSTEM (SUPER ADMIN READY)
 function login() {
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
+  const u = username.value.trim();
+  const p = password.value.trim();
 
-  let foundRole = null;
-
-  // 🔥 AUTO DETECT ROLE BASED ON CREDENTIALS
-  for (const role in accounts) {
-    if (accounts[role].user === u && accounts[role].pass === p) {
-      foundRole = role;
-      break;
-    }
-  }
-
-  if (!foundRole) {
-    alert("Invalid username or password");
+  if (!u || !p) {
+    alert("Please fill in all fields");
     return;
   }
 
-  localStorage.setItem("role", foundRole);
-  localStorage.setItem("currentUser", foundRole);
+  db.collection("users")
+    .where("username", "==", u)
+    .where("password", "==", p)
+    .get()
+    .then(snap => {
 
-  // 🚀 ROUTING FIX
-  if (foundRole === "admin") {
-    window.location.href = "/admin-dashboard.html";
-  }
+      if (snap.empty) {
+        alert("Invalid username or password");
+        return;
+      }
 
-  else if (foundRole === "rider1") {
-    window.location.href = "/rider1-dashboard.html";
-  }
+      let user = snap.docs[0].data();
 
-  else if (foundRole === "rider2") {
-    window.location.href = "/rider2-dashboard.html";
-  }
+      localStorage.setItem("role", user.role);
+      localStorage.setItem("username", user.username);
 
-  else if (foundRole === "rider3") {
-    window.location.href = "/rider3-dashboard.html";
-  }
+      // 🚀 ROLE ROUTING (NO SLASH)
+      if (user.role === "superadmin") {
+        window.location.href = "super-admin.html";
+      }
 
-  else if (foundRole === "cashier") {
-    window.location.href = "/cashier-dashboard.html";
-  }
+      else if (user.role === "admin") {
+        window.location.href = "admin-dashboard.html";
+      }
+
+      else if (user.role === "cashier") {
+        window.location.href = "cashier-dashboard.html";
+      }
+
+      else if (user.role === "rider") {
+        window.location.href = "rider-dashboard.html";
+      }
+
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Database error");
+    });
 }
 
-// Allow Enter key to submit
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("password").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") login();
-  });
+// ENTER KEY SUPPORT
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter") login();
 });
 </script>
 
