@@ -1,196 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Super Admin</title>
-
+<title>Enterprise Admin</title>
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  display:flex;
-  background:#0f172a;
-  color:white;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width:230px;
-  background:#020617;
-  padding:20px;
-  height:100vh;
-}
-
-.sidebar h2 { color:#38bdf8; }
-
-.sidebar button {
-  width:100%;
-  margin:10px 0;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.main {
-  flex:1;
-  padding:20px;
-}
-
-.card {
-  background:#1e293b;
-  padding:15px;
-  margin:10px 0;
-  border-radius:10px;
-}
-input, select {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border-radius:8px;
-  border:none;
-}
+body{font-family:Arial;background:#0f172a;color:white;margin:0}
+.container{padding:20px}
+.card{background:#1e293b;padding:15px;margin:10px;border-radius:10px}
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-  <h2>👑 Super Admin</h2>
+<div class="container">
+  <h1>👑 Super Admin Dashboard</h1>
 
-  <button onclick="show('users')">👥 Users</button>
-  <button onclick="show('loans')">💰 Loans</button>
-  <button onclick="logout()">🚪 Logout</button>
+  <button onclick="logout()">Logout</button>
+
+  <div id="stats"></div>
+  <canvas id="chart"></canvas>
+
+  <h2>Loans</h2>
+  <div id="loanList"></div>
 </div>
 
-<div class="main">
-  <h1 id="title">Dashboard</h1>
-  <div id="content"></div>
-</div>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// 🔥 FIREBASE CONFIG (FIXED)
-const firebaseConfig = {
-  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
-  authDomain: "kasipag-app.firebaseapp.com",
-  projectId: "kasipag-app",
-  storageBucket: "kasipag-app.appspot.com",
-  messagingSenderId: "442166485005",
-  appId: "1:442166485005:web:ed07396b8a59006efa3544"
-};
+const user = JSON.parse(sessionStorage.getItem("user"));
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+if(!user || user.role !== "superadmin"){
+  location.href="index.html";
+}
 
-
-// 🔐 SAFE ROLE CHECK (NO AUTO LOGOUT BUG)
-document.addEventListener("DOMContentLoaded", () => {
-  const role = localStorage.getItem("role");
-
-  if (!role || role !== "superadmin") {
-    alert("Access denied");
-    window.location.href = "index.html";
-  }
-});
-
-
-// 🚪 LOGOUT (FIXED)
 function logout(){
-  localStorage.removeItem("role");
-  localStorage.removeItem("username");
-  window.location.href = "index.html";
+  sessionStorage.clear();
+  location.href="index.html";
 }
 
+let loans = JSON.parse(localStorage.getItem("loans") || "[]");
 
-// 🔄 VIEW SWITCH
-function show(type){
-  const c = document.getElementById("content");
+// STATS
+function renderStats(){
+  const paid = loans.filter(l=>l.status==="paid").length;
+  const pending = loans.filter(l=>l.status==="pending").length;
+  const overdue = loans.filter(l=>l.status==="overdue").length;
 
-  if(type === "users"){
-    document.getElementById("title").innerText = "User Management";
+  stats.innerHTML = `
+    <div class="card">Paid: ${paid}</div>
+    <div class="card">Pending: ${pending}</div>
+    <div class="card">Overdue: ${overdue}</div>
+  `;
 
-    c.innerHTML = `
-      <input id="user" placeholder="username">
-      <input id="pass" placeholder="password">
-
-      <select id="role">
-        <option value="admin">Admin</option>
-        <option value="cashier">Cashier</option>
-        <option value="rider">Rider</option>
-      </select>
-
-      <button onclick="addUser()">Add User</button>
-
-      <div id="userList"></div>
-    `;
-
-    loadUsers();
-  }
-
-  if(type === "loans"){
-    document.getElementById("title").innerText = "All Loans";
-
-    db.collection("payments").onSnapshot(snap => {
-      c.innerHTML = "";
-
-      snap.forEach(doc => {
-        let d = doc.data();
-
-        c.innerHTML += `
-          <div class="card">
-            <b>${d.name || "No Name"}</b><br>
-            Amount: ₱${d.amount || 0}
-          </div>
-        `;
-      });
-    });
-  }
-}
-
-
-// 👤 ADD USER
-function addUser(){
-  const u = document.getElementById("user").value;
-  const p = document.getElementById("pass").value;
-  const r = document.getElementById("role").value;
-
-  if(!u || !p){
-    alert("Fill all fields");
-    return;
-  }
-
-  db.collection("users").add({
-    username: u,
-    password: p,
-    role: r
-  });
-
-  alert("User added!");
-}
-
-
-// 👥 LOAD USERS
-function loadUsers(){
-  db.collection("users").onSnapshot(snap => {
-    const list = document.getElementById("userList");
-    list.innerHTML = "";
-
-    snap.forEach(doc => {
-      let d = doc.data();
-
-      list.innerHTML += `
-        <div class="card">
-          ${d.username} (${d.role})
-        </div>
-      `;
-    });
+  new Chart(chart, {
+    type:"bar",
+    data:{
+      labels:["Paid","Pending","Overdue"],
+      datasets:[{data:[paid,pending,overdue]}]
+    }
   });
 }
+
+// LOANS
+function renderLoans(){
+  loanList.innerHTML = loans.map(l=>`
+    <div class="card">
+      <b>${l.name}</b> - ₱${l.amount}
+      <br>Status: ${l.status}
+      <br>Rider: ${l.rider || "none"}
+    </div>
+  `).join("");
+}
+
+renderStats();
+renderLoans();
 </script>
 
 </body>

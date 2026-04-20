@@ -1,154 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Kasipag Microfinancing</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Kasipag Login</title>
 
 <style>
-body {
+body{
   margin:0;
-  font-family:'Inter', Arial, sans-serif;
-  background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  font-family:Arial;
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
-  color:#f1f5f9;
-  overflow:hidden;
-}
-.box {
-  background:linear-gradient(145deg, #1e293b 0%, #334155 100%);
-  padding:40px;
-  border-radius:20px;
-  width:380px;
-  text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
-  position:relative;
-  animation:fadeIn 0.8s ease-out;
-}
-@keyframes fadeIn {
-  from { opacity:0; transform:translateY(30px); }
-  to { opacity:1; transform:translateY(0); }
-}
-.top-square {
-  width:140px;
-  height:140px;
-  margin:0 auto 30px auto;
-  background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius:28px;
-  box-shadow:0 15px 40px rgba(59,130,246,0.4);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:48px;
+  background:#0f172a;
   color:white;
-  position:relative;
 }
-.top-square::before {
-  content:'💰';
-  position:absolute;
-}
-h2 {
-  font-size:30px;
-  font-weight:800;
-  margin-bottom:6px;
-  background:linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.tagline {
-  font-size:15px;
-  color:#cbd5e1;
-  max-width:320px;
-  margin:0 auto 30px auto;
-  line-height:1.7;
-}
-.card {
-  margin-top:10px;
-}
-.card h3 {
-  font-size:20px;
-  margin-bottom:15px;
-  color:#e2e8f0;
-}
-.badge {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:10px 16px;
-  border-radius:999px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.08);
-  color:#cbd5e1;
-  font-size:13px;
-  margin-bottom:20px;
-}
-.note {
-  font-size:13px;
-  color:#94a3b8;
-  margin-top:20px;
-  line-height:1.6;
-}
-button {
-  width:100%;
-  margin:12px 0;
-  padding:16px;
-  border:none;
+
+.box{
+  background:#1e293b;
+  padding:30px;
   border-radius:12px;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:600;
-  transition:all 0.3s ease;
-  position:relative;
-  overflow:hidden;
+  width:300px;
 }
-button::before {
-  content:'';
-  position:absolute;
-  top:0;
-  left:-100%;
+
+input{
   width:100%;
-  height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition:left 0.5s;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:none;
 }
-button:hover::before {
-  left:100%;
-}
-.a {
-  background:linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6;
   color:white;
-  box-shadow:0 8px 25px rgba(239,68,68,0.3);
-}
-.a:hover {
-  transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(239,68,68,0.4);
-}
-.b {
-  background:linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color:white;
-  box-shadow:0 8px 25px rgba(34,197,94,0.3);
-}
-.b:hover {
-  transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(34,197,94,0.4);
-}
-.c {
-  background:linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color:white;
-  box-shadow:0 8px 25px rgba(59,130,246,0.3);
-}
-.c:hover {
-  transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(59,130,246,0.4);
-}
-.subtitle {
-  font-size:14px;
-  color:#94a3b8;
-  margin-top:20px;
+  font-weight:bold;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -156,23 +47,42 @@ button:hover::before {
 <body>
 
 <div class="box">
-  <div class="top-square"></div>
-  <h2>Kasipag Microfinancing</h2>
-  <div class="tagline">To HELP, to CREATE and to PROVIDE</div>
+  <h2>Kasipag Login</h2>
 
-  <div class="card">
-    <div class="badge">Trusted by local entrepreneurs</div>
-    <button class="a" onclick="go('admin')">Admin Portal</button>
-    <button class="c" onclick="go('cashier')">Cashier Login</button>
-    <button class="b" onclick="go('rider')">Rider Access</button>
-  
-    <div class="subtitle">Make every transaction fast, secure.</div>
-  </div>
+  <input id="user" placeholder="username">
+  <input id="pass" type="password" placeholder="password">
+
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- DATA JS -->
+<script src="data.js"></script>
 
 <script>
-function go(role){
-  localStorage.setItem("selectedRole", role);
-  window.location.href = "/login.html";
+function login(){
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  const user = loginUser(u, p);
+
+  if(!user){
+    alert("Invalid login");
+    return;
+  }
+
+  // ROUTING
+  if(user.role === "superadmin"){
+    window.location.href = "admin.html";
+  }
+  else if(user.role === "admin"){
+    window.location.href = "admin-dashboard.html";
+  }
+  else if(user.role === "cashier"){
+    window.location.href = "cashier.html";
+  }
+  else if(user.role === "rider"){
+    window.location.href = "rider.html";
+  }
 }
 </script>
 
