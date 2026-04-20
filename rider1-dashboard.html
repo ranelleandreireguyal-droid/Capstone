@@ -8,38 +8,104 @@
 <style>
 body {
   font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #f1f5f9;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background-attachment: fixed;
+  color: #1e293b;
   padding: 20px;
   min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(168,85,247,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(6,182,212,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .header {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.header .home-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+}
+
+.header .home-btn:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+}
+
+.header button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239,68,68,0.3);
+}
+
+.header button:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(239,68,68,0.4);
 }
 
 .card {
-  background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 15px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 24px;
+  margin-bottom: 18px;
+  border-radius: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
   transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.1);
 }
 
 .card-info {
@@ -47,15 +113,16 @@ body {
 }
 
 .card-info b {
-  font-size: 18px;
-  color: #f1f5f9;
+  font-size: 20px;
+  color: #1e293b;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  font-weight: 600;
 }
 
 .card-info div {
-  color: #cbd5e1;
-  margin-bottom: 3px;
+  color: #64748b;
+  margin-bottom: 4px;
   font-size: 14px;
 }
 
@@ -126,7 +193,7 @@ button {
 
 <body>
 
-<div class="header">Rider 1 Dashboard <button onclick="logout()" style="float:right; background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button></div>
+<div class="header">Rider 1 Dashboard <button class="home-btn" onclick="window.location.href='/index.html'">Home</button> <button onclick="logout()">Logout</button></div>
 <div class="note">Collect payment from customers, then cashier will confirm the payment as paid.</div>
 <div id="list"></div>
 

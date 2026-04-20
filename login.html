@@ -9,13 +9,13 @@
 body {
   margin:0;
   font-family:'Inter', Arial, sans-serif;
-  background:linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
   background-attachment:fixed;
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
-  color:#f1f5f9;
+  color:#1e293b;
   overflow:hidden;
   position:relative;
 }
@@ -28,24 +28,24 @@ body::before {
   width:100%;
   height:100%;
   background-image:
-    radial-gradient(circle at 20% 80%, rgba(120,119,198,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120,219,226,0.1) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(168,85,247,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(6,182,212,0.1) 0%, transparent 50%);
   pointer-events:none;
 }
 
 .box {
-  background:linear-gradient(145deg, rgba(30,41,59,0.95) 0%, rgba(51,65,85,0.95) 100%);
+  background:linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   padding:50px;
   border-radius:25px;
   width:400px;
   text-align:center;
-  box-shadow:0 25px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow:0 25px 80px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8);
   position:relative;
   animation:slideIn 0.8s ease-out;
-  border:1px solid rgba(255,255,255,0.2);
+  border:1px solid rgba(0,0,0,0.1);
 }
 
 @keyframes slideIn {
@@ -63,7 +63,7 @@ body::before {
   align-items:center;
   justify-content:center;
   font-size:45px;
-  box-shadow:0 15px 40px rgba(59,130,246,0.4), inset 0 2px 0 rgba(255,255,255,0.2);
+  box-shadow:0 15px 40px rgba(59,130,246,0.3), inset 0 2px 0 rgba(255,255,255,0.3);
   animation:pulse 2s infinite;
 }
 
@@ -76,16 +76,16 @@ h2 {
   font-size:32px;
   font-weight:700;
   margin-bottom:10px;
-  background:linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  background:linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
-  text-shadow:0 2px 4px rgba(0,0,0,0.3);
+  text-shadow:0 2px 4px rgba(0,0,0,0.1);
 }
 
 .subtitle {
   font-size:16px;
-  color:#94a3b8;
+  color:#64748b;
   margin-bottom:30px;
   font-weight:400;
 }
@@ -95,9 +95,9 @@ input {
   padding:16px 20px;
   margin:12px 0;
   border-radius:12px;
-  border:1px solid rgba(255,255,255,0.15);
-  background:rgba(255,255,255,0.08);
-  color:#f1f5f9;
+  border:1px solid rgba(0,0,0,0.1);
+  background:rgba(255,255,255,0.8);
+  color:#1e293b;
   font-size:16px;
   outline:none;
   transition:all 0.3s ease;
@@ -106,14 +106,14 @@ input {
 }
 
 input::placeholder {
-  color:#64748b;
+  color:#94a3b8;
   font-weight:400;
 }
 
 input:focus {
-  background:rgba(255,255,255,0.12);
-  border-color:rgba(59,130,246,0.6);
-  box-shadow:0 0 0 4px rgba(59,130,246,0.15), 0 4px 12px rgba(59,130,246,0.2);
+  background:rgba(255,255,255,0.9);
+  border-color:#3b82f6;
+  box-shadow:0 0 0 4px rgba(59,130,246,0.15), 0 4px 12px rgba(59,130,246,0.1);
   transform:translateY(-1px);
 }
 
@@ -129,7 +129,7 @@ button {
   font-size:16px;
   cursor:pointer;
   transition:all 0.3s ease;
-  box-shadow:0 10px 30px rgba(59,130,246,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  box-shadow:0 10px 30px rgba(59,130,246,0.3), 0 0 0 1px rgba(255,255,255,0.2);
   position:relative;
   overflow:hidden;
   backdrop-filter:blur(10px);
@@ -181,8 +181,8 @@ button:active {
   <button onclick="login()">Login</button>
 
   <div style="margin-top:20px; font-size:14px;">
-    <a href="/index.html" style="color:#94a3b8; text-decoration:none; transition:color 0.3s ease; display:inline-flex; align-items:center; gap:5px;">
-      <span style="font-size:16px;">←</span> Back to Menu
+    <a href="/index.html" style="color:#3b82f6; text-decoration:none; transition:color 0.3s ease; display:inline-flex; align-items:center; gap:5px;">
+      <span style="font-size:16px;">←</span> Back to Home
     </a>
   </div>
 
