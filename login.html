@@ -1,4 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kasipag Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  font-family:'Inter', Arial, sans-serif;
+  background:linear-gradient(135deg, #f8fafc, #e2e8f0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box {
+  background:#fff;
+  padding:40px;
+  border-radius:20px;
+  width:380px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+  text-align:center;
+}
+
+h2 { margin-bottom:10px; }
+
+.subtitle {
+  font-size:14px;
+  color:#64748b;
+  margin-bottom:20px;
+}
+
+input {
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #cbd5e1;
+  outline:none;
+}
+
+input:focus {
+  border-color:#3b82f6;
+}
+
+button {
+  width:100%;
+  padding:14px;
+  margin-top:15px;
+  border:none;
+  border-radius:10px;
+  background:#3b82f6;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button:hover {
+  background:#2563eb;
+}
+
+a {
+  display:block;
+  margin-top:15px;
+  color:#3b82f6;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>🔐 Kasipag Login</h2>
+  <div class="subtitle">Microfinance System</div>
+
+  <input id="username" placeholder="Username / Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <a href="index.html">← Back to Home</a>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
 <script>
+// 🔥 FIREBASE CONFIG (FIXED)
+const firebaseConfig = {
+  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app",
+  storageBucket: "kasipag-app.appspot.com",
+  messagingSenderId: "442166485005",
+  appId: "1:442166485005:web:ed07396b8a59006efa3544",
+  measurementId: "G-SJQKE0F3H0"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 🔥 LOGIN FUNCTION (FIXED LOGIC)
 function login() {
   const input = document.getElementById("username").value.trim();
   const pass = document.getElementById("password").value.trim();
@@ -8,35 +115,32 @@ function login() {
     return;
   }
 
-  // 🔥 STEP 1: hanapin muna by username OR email
-  db.collection("users")
-    .where("password", "==", pass)
-    .get()
+  db.collection("users").get()
     .then(snapshot => {
 
       let user = null;
 
       snapshot.forEach(doc => {
-        const data = doc.data();
+        let d = doc.data();
 
         if (
-          data.username === input ||
-          data.email === input
+          (d.username === input || d.email === input) &&
+          d.password === pass
         ) {
-          user = data;
+          user = d;
         }
       });
 
       if (!user) {
-        alert("Invalid username/email or password");
+        alert("Invalid login");
         return;
       }
 
-      // 🔥 SAVE SESSION
+      // save session
       localStorage.setItem("role", user.role);
       localStorage.setItem("username", user.username);
 
-      // 🔥 REDIRECT
+      // redirect
       if (user.role === "superadmin") {
         window.location.href = "super-admin.html";
       }
@@ -49,6 +153,9 @@ function login() {
       else if (user.role === "rider") {
         window.location.href = "rider-dashboard.html";
       }
+      else {
+        alert("Unknown role");
+      }
 
     })
     .catch(err => {
@@ -56,4 +163,12 @@ function login() {
       alert("Firebase error");
     });
 }
+
+// ENTER KEY SUPPORT
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
+});
 </script>
+
+</body>
+</html>
