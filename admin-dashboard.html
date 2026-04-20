@@ -6,518 +6,230 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+* { box-sizing:border-box; }
+
 body {
-  margin: 0;
-  font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
-  background-attachment: fixed;
-  color: #1e293b;
-  padding: 20px;
-  min-height: 100vh;
-  position: relative;
+  margin:0;
+  font-family:'Inter', sans-serif;
+  background:#0f172a;
+  color:white;
+  display:flex;
 }
 
-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(168,85,247,0.05) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(6,182,212,0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
+/* SIDEBAR */
+.sidebar {
+  width:220px;
+  background:#020617;
+  height:100vh;
+  padding:20px;
 }
 
+.sidebar h2 {
+  color:#38bdf8;
+}
+
+.sidebar button {
+  width:100%;
+  margin-top:20px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.home-btn { background:#3b82f6; color:white; }
+.logout-btn { background:#ef4444; color:white; }
+
+/* MAIN */
+.main {
+  flex:1;
+  padding:30px;
+}
+
+/* HEADER */
 .header {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 25px;
-  text-align: center;
-  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: relative;
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:20px;
 }
 
-.header .home-btn {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
-}
-
-.header .home-btn:hover {
-  transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 6px 20px rgba(59,130,246,0.4);
-}
-
-.header button {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(239,68,68,0.3);
-}
-
-.header button:hover {
-  transform: translateY(-50%) scale(1.05);
-  box-shadow: 0 6px 20px rgba(239,68,68,0.4);
-}
-
-.note {
-  color: #64748b;
-  margin-bottom: 20px;
-  font-size: 16px;
-  text-align: center;
-  font-weight: 400;
-}
-
+/* FORM */
 .form {
-  background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 25px;
-  border-radius: 18px;
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  margin-bottom: 35px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05);
-  border: 1px solid rgba(0,0,0,0.1);
-  animation: fadeInUp 0.6s ease-out;
+  background:#1e293b;
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:20px;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.form select, .form input {
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+  border:none;
 }
 
-input {
-  padding: 14px 18px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.1);
-  outline: none;
-  background: rgba(255,255,255,0.8);
-  color: #1e293b;
-  font-size: 16px;
-  flex: 1;
-  min-width: 200px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-input::placeholder {
-  color: #94a3b8;
-}
-
-input:focus {
-  background: rgba(255,255,255,0.9);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
-  transform: translateY(-1px);
-}
-
-button {
-  padding: 14px 20px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(34,197,94,0.3);
-  backdrop-filter: blur(10px);
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(34,197,94,0.4);
-}
-}
-
-input::placeholder {
-  color: #94a3b8;
-}
-
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(34,197,94,0.3);
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(34,197,94,0.4);
-}
-
-.note {
-  color: #cbd5e1;
-  margin-bottom: 15px;
-  font-size: 14px;
-  text-align: center;
-}
-
-.summary {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
-  margin-bottom: 35px;
-  animation: fadeInUp 0.8s ease-out 0.2s both;
-}
-
-.summary-card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(0,0,0,0.1);
-  padding: 24px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.summary-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
-}
-
-.summary-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-}
-
-.summary-card strong {
-  display: block;
-  font-size: 28px;
-  margin-bottom: 8px;
-  color: #1e293b;
-  font-weight: 700;
-}
-
-.summary-card div {
-  color: #64748b;
-  font-size: 14px;
-  font-weight: 500;
-}
-
+/* CARD */
 .card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  padding: 24px;
-  margin-bottom: 18px;
-  border-radius: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05);
-  border: 1px solid rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.6s ease-out;
+  background:#1e293b;
+  padding:15px;
+  margin:10px 0;
+  border-radius:12px;
+  display:flex;
+  justify-content:space-between;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.1);
-}
-
-.card-info {
-  flex: 1;
-}
-
-.card-info strong {
-  font-size: 20px;
-  color: #1e293b;
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-
-.card-info div {
-  color: #64748b;
-  margin-bottom: 4px;
-  font-size: 14px;
-}
-
-.card-info div {
-  color: #cbd5e1;
-  margin-bottom: 3px;
-  font-size: 14px;
-}
-
+/* STATUS */
 .status {
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  padding:5px 10px;
+  border-radius:6px;
 }
 
-.status-pending { background: linear-gradient(135deg, #facc15, #eab308); color: #1f2937; }
-.status-paid { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
-.status-none { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
-
-.card-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-select {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: rgba(255,255,255,0.8);
-  color: #1e293b;
-  font-size: 14px;
-  outline: none;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-select:focus {
-  background: rgba(255,255,255,0.9);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-}
-
-select option {
-  background: #ffffff;
-  color: #1e293b;
-}
-
-.delete-btn {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(239,68,68,0.3);
-  backdrop-filter: blur(10px);
-}
-
-.delete-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(239,68,68,0.4);
-}
-
-.no-data {
-  text-align: center;
-  color: #64748b;
-  font-style: italic;
-  margin-top: 60px;
-  font-size: 18px;
-  padding: 40px;
-  background: rgba(255,255,255,0.5);
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.05);
-}
+.pending { background:orange; }
+.paid { background:green; }
 </style>
 </head>
 
 <body>
 
-<div class="header">👑 Kasipag Admin Dashboard <button class="home-btn" onclick="window.location.href='/index.html'">Home</button> <button onclick="logout()">Logout</button></div>
-<div class="note">Assign payments to riders here. All assignments and pending collections are visible to riders and the cashier in real time.</div>
-<div class="summary">
-  <div class="summary-card">
-    <strong id="totalCount">0</strong>
-    <div>Total Records</div>
-  </div>
-  <div class="summary-card">
-    <strong id="assignedCount">0</strong>
-    <div>Assigned to Riders</div>
-  </div>
-  <div class="summary-card">
-    <strong id="pendingCount">0</strong>
-    <div>Pending Cashier</div>
-  </div>
-  <div class="summary-card">
-    <strong id="paidCount">0</strong>
-    <div>Paid</div>
-  </div>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>Kasipag</h2>
+  <button class="home-btn" onclick="goHome()">🏠 Home</button>
+  <button class="logout-btn" onclick="logout()">🚪 Logout</button>
 </div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="header">👑 Admin Dashboard</div>
 
 <!-- FORM -->
 <div class="form">
-  <input id="name" placeholder="Customer Name" required>
-  <input id="amount" placeholder="Loan Amount (₱)" type="number" min="0" required>
-  <button onclick="addCustomer()">Add Customer</button>
+
+  <label>Type</label>
+  <select id="type" onchange="toggleGroup()">
+    <option value="single">Single Borrower</option>
+    <option value="group">Group Loan</option>
+  </select>
+
+  <div id="singleBox">
+    <input id="name" placeholder="Customer Name">
+  </div>
+
+  <div id="groupBox" style="display:none;">
+    <input id="groupNames" placeholder="Enter names (comma separated)">
+  </div>
+
+  <input id="amount" type="number" placeholder="Amount">
+
+  <button onclick="addCustomer()">Add</button>
+
 </div>
 
 <!-- LIST -->
 <div id="list"></div>
+
+</div>
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
-// 🔥 YOUR FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "AIzaSyCbA1nHwbw_yYVI9MtbjZetYZx7_gmw25c",
-  authDomain: "kasipag-app.firebaseapp.com",
-  projectId: "kasipag-app",
-  storageBucket: "kasipag-app.firebasestorage.app",
-  messagingSenderId: "442166485005",
-  appId: "1:442166485005:web:ed07396b8a59006efa3544",
-  measurementId: "G-SJQKE0F3H0"
-};
-
-if (localStorage.getItem("role") !== "admin") {
-  window.location.href = "/index.html";
+// ROLE PROTECT
+if(localStorage.getItem("role") !== "admin"){
+  window.location.href="index.html";
 }
 
-// INIT FIREBASE
+// NAV
+function logout(){
+  localStorage.clear();
+  window.location.href="index.html";
+}
+function goHome(){
+  window.location.href="index.html";
+}
+
+// FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyCb...",
+  authDomain: "kasipag-app.firebaseapp.com",
+  projectId: "kasipag-app"
+};
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "/index.html";
+// TOGGLE GROUP
+function toggleGroup(){
+  let type = document.getElementById("type").value;
+
+  document.getElementById("singleBox").style.display = type==="single" ? "block":"none";
+  document.getElementById("groupBox").style.display = type==="group" ? "block":"none";
 }
 
-/* ADD CUSTOMER */
-function addCustomer() {
-  let name = document.getElementById("name").value.trim();
+// ADD
+function addCustomer(){
+  let type = document.getElementById("type").value;
   let amount = parseFloat(document.getElementById("amount").value);
 
-  if (!name || isNaN(amount) || amount <= 0) {
-    alert("Please enter valid customer name and amount");
-    return;
+  let names = [];
+
+  if(type==="single"){
+    let name = document.getElementById("name").value.trim();
+    if(!name) return alert("Enter name");
+    names.push(name);
+  } else {
+    let group = document.getElementById("groupNames").value.trim();
+    if(!group) return alert("Enter group names");
+    names = group.split(",");
   }
 
   db.collection("payments").add({
-    name: name,
-    amount: amount,
-    assignedTo: "",
-    status: "New",
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  document.getElementById("name").value = "";
-  document.getElementById("amount").value = "";
-}
-
-/* ASSIGN RIDER */
-function assignRider(docId, rider) {
-  db.collection("payments").doc(docId).update({
-    assignedTo: rider
+    names:names,
+    type:type,
+    amount:amount,
+    status:"Pending",
+    assignedTo:""
   });
 }
 
-/* DELETE PAYMENT */
-function deletePayment(docId) {
-  if (confirm("Are you sure you want to delete this payment?")) {
-    db.collection("payments").doc(docId).delete();
-  }
-}
-
-function updateSummary(total, assigned, pending, paid) {
-  document.getElementById("totalCount").textContent = total;
-  document.getElementById("assignedCount").textContent = assigned;
-  document.getElementById("pendingCount").textContent = pending;
-  document.getElementById("paidCount").textContent = paid;
-}
-
-/* REAL-TIME LIST */
-db.collection("payments").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+// DISPLAY
+db.collection("payments").onSnapshot(snap=>{
   let list = document.getElementById("list");
-  list.innerHTML = "";
+  list.innerHTML="";
 
-  let total = 0;
-  let assigned = 0;
-  let pending = 0;
-  let paid = 0;
-
-  if (snapshot.empty) {
-    list.innerHTML = '<div class="no-data">No payments found. Add a customer to get started.</div>';
-    updateSummary(0, 0, 0, 0);
-    return;
-  }
-
-  snapshot.forEach(doc => {
-    total += 1;
+  snap.forEach(doc=>{
     let d = doc.data();
-    if (d.assignedTo) assigned += 1;
-    if (d.status === "Pending") pending += 1;
-    if (d.status === "Paid") paid += 1;
-    let docId = doc.id;
-
-    let statusClass = "status-none";
-    if (d.status === "Pending") statusClass = "status-pending";
-    if (d.status === "Paid") statusClass = "status-paid";
 
     list.innerHTML += `
-      <div class="card">
-        <div class="card-info">
-          <strong>${d.name}</strong>
-          <div>Amount: ₱${d.amount.toLocaleString()}</div>
-          <div>Rider Assigned: ${d.assignedTo || "Not Assigned"}</div>
-          <div>Status: <span class="status ${statusClass}">${d.status}</span></div>
-        </div>
-        <div class="card-actions">
-          <select onchange="assignRider('${docId}', this.value)">
-            <option value="">Assign Rider</option>
-            <option value="Rider 1" ${d.assignedTo === "Rider 1" ? "selected" : ""}>Rider 1</option>
-            <option value="Rider 2" ${d.assignedTo === "Rider 2" ? "selected" : ""}>Rider 2</option>
-            <option value="Rider 3" ${d.assignedTo === "Rider 3" ? "selected" : ""}>Rider 3</option>
-          </select>
-          <button class="delete-btn" onclick="deletePayment('${docId}')">Delete</button>
-        </div>
+    <div class="card">
+      <div>
+        <strong>${d.type==="group" ? "Group" : "Single"}</strong><br>
+        Names: ${d.names.join(", ")}<br>
+        ₱${d.amount}
       </div>
+
+      <div>
+        <span class="status ${d.status==="Paid"?"paid":"pending"}">${d.status}</span><br><br>
+
+        <button onclick="markPaid('${doc.id}')">Mark Paid</button>
+        <button onclick="deleteData('${doc.id}')">Delete</button>
+      </div>
+    </div>
     `;
   });
-
-  updateSummary(total, assigned, pending, paid);
 });
+
+// ACTIONS
+function markPaid(id){
+  db.collection("payments").doc(id).update({status:"Paid"});
+}
+
+function deleteData(id){
+  db.collection("payments").doc(id).delete();
+}
 </script>
 
 </body>
