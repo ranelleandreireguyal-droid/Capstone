@@ -9,99 +9,130 @@
 body {
   margin:0;
   font-family:'Inter', Arial, sans-serif;
-  background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background:linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  background-attachment:fixed;
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
   color:#f1f5f9;
   overflow:hidden;
+  position:relative;
+}
+
+body::before {
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(120,119,198,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120,219,226,0.1) 0%, transparent 50%);
+  pointer-events:none;
 }
 
 .box {
-  background:linear-gradient(145deg, #1e293b 0%, #334155 100%);
-  padding:40px;
-  border-radius:20px;
-  width:380px;
+  background:linear-gradient(145deg, rgba(30,41,59,0.95) 0%, rgba(51,65,85,0.95) 100%);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  padding:50px;
+  border-radius:25px;
+  width:400px;
   text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+  box-shadow:0 25px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
   position:relative;
-  animation:slideIn 0.6s ease-out;
+  animation:slideIn 0.8s ease-out;
+  border:1px solid rgba(255,255,255,0.2);
 }
 
 @keyframes slideIn {
-  from { opacity:0; transform:translateY(-30px); }
-  to { opacity:1; transform:translateY(0); }
+  from { opacity:0; transform:translateY(-40px) scale(0.95); }
+  to { opacity:1; transform:translateY(0) scale(1); }
 }
 
 .logo-icon {
-  width:80px;
-  height:80px;
-  margin:0 auto 25px;
-  background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius:20px;
+  width:90px;
+  height:90px;
+  margin:0 auto 30px;
+  background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #7c3aed 100%);
+  border-radius:25px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:40px;
-  box-shadow:0 10px 30px rgba(59,130,246,0.3);
+  font-size:45px;
+  box-shadow:0 15px 40px rgba(59,130,246,0.4), inset 0 2px 0 rgba(255,255,255,0.2);
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform:scale(1); }
+  50% { transform:scale(1.05); }
 }
 
 h2 {
-  font-size:28px;
+  font-size:32px;
   font-weight:700;
-  margin-bottom:8px;
-  background:linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+  margin-bottom:10px;
+  background:linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
+  text-shadow:0 2px 4px rgba(0,0,0,0.3);
 }
 
 .subtitle {
-  font-size:14px;
+  font-size:16px;
   color:#94a3b8;
-  margin-bottom:25px;
+  margin-bottom:30px;
+  font-weight:400;
 }
 
 input {
   width:100%;
-  padding:14px;
-  margin:10px 0;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.05);
+  padding:16px 20px;
+  margin:12px 0;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.08);
   color:#f1f5f9;
   font-size:16px;
   outline:none;
   transition:all 0.3s ease;
   box-sizing:border-box;
+  backdrop-filter:blur(10px);
 }
 
 input::placeholder {
   color:#64748b;
+  font-weight:400;
 }
 
 input:focus {
-  background:rgba(255,255,255,0.08);
-  border-color:rgba(59,130,246,0.5);
-  box-shadow:0 0 0 3px rgba(59,130,246,0.1);
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(59,130,246,0.6);
+  box-shadow:0 0 0 4px rgba(59,130,246,0.15), 0 4px 12px rgba(59,130,246,0.2);
+  transform:translateY(-1px);
 }
 
 button {
   width:100%;
-  padding:14px;
-  margin-top:20px;
+  padding:16px 20px;
+  margin-top:25px;
   border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius:12px;
+  background:linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
   color:white;
   font-weight:600;
   font-size:16px;
   cursor:pointer;
   transition:all 0.3s ease;
-  box-shadow:0 8px 25px rgba(59,130,246,0.3);
+  box-shadow:0 10px 30px rgba(59,130,246,0.4), 0 0 0 1px rgba(255,255,255,0.1);
   position:relative;
   overflow:hidden;
+  backdrop-filter:blur(10px);
 }
 
 button::before {
@@ -111,8 +142,8 @@ button::before {
   left:-100%;
   width:100%;
   height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition:left 0.5s;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition:left 0.6s;
 }
 
 button:hover::before {
@@ -120,18 +151,19 @@ button:hover::before {
 }
 
 button:hover {
-  transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(59,130,246,0.4);
+  transform:translateY(-3px);
+  box-shadow:0 15px 40px rgba(59,130,246,0.5), 0 0 0 1px rgba(255,255,255,0.2);
 }
 
 button:active {
-  transform:translateY(0);
+  transform:translateY(-1px);
 }
 
 .footer-text {
-  font-size:12px;
+  font-size:13px;
   color:#64748b;
-  margin-top:25px;
+  margin-top:30px;
+  opacity:0.8;
 }
 </style>
 </head>
@@ -148,8 +180,10 @@ button:active {
 
   <button onclick="login()">Login</button>
 
-  <div style="margin-top:15px; font-size:14px; color:#94a3b8;">
-    <a href="/index.html" style="color:#94a3b8; text-decoration:none;">← Back to Menu</a>
+  <div style="margin-top:20px; font-size:14px;">
+    <a href="/index.html" style="color:#94a3b8; text-decoration:none; transition:color 0.3s ease; display:inline-flex; align-items:center; gap:5px;">
+      <span style="font-size:16px;">←</span> Back to Menu
+    </a>
   </div>
 
   <div class="footer-text">Demo: admin / admin123</div>
