@@ -126,7 +126,7 @@ button {
 
 <body>
 
-<div class="header">Rider 3 Dashboard</div>
+<div class="header">Rider 3 Dashboard <button onclick="logout()" style="float:right; background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button></div>
 <div class="note">Collect payment from customers, then cashier will confirm the payment as paid.</div>
 <div id="list"></div>
 
@@ -142,6 +142,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const riderId = "Rider 3";
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "/index.html";
+}
 
 function markCollected(id) {
   db.collection("payments").doc(id).update({
@@ -186,8 +191,6 @@ db.collection("payments").onSnapshot(snapshot => {
   }
 });
 </script>
-
-<a class="logout" href="/index.html" onclick="localStorage.clear()">Logout</a>
 
 </body>
 </html>

@@ -202,7 +202,7 @@ select option {
 
 <body>
 
-<div class="header">👑 Kasipag Admin Dashboard</div>
+<div class="header">👑 Kasipag Admin Dashboard <button onclick="logout()" style="float:right; background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button></div>
 <div class="note">Assign payments to riders here. All assignments and pending collections are visible to riders and the cashier in real time.</div>
 <div class="summary">
   <div class="summary-card">
@@ -256,6 +256,11 @@ if (localStorage.getItem("role") !== "admin") {
 // INIT FIREBASE
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "/index.html";
+}
 
 /* ADD CUSTOMER */
 function addCustomer() {

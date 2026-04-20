@@ -126,7 +126,7 @@ button {
 
 <body>
 
-<div class="header">Cashier Dashboard</div>
+<div class="header">Cashier Dashboard <button onclick="logout()" style="float:right; background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Logout</button></div>
 <div class="note">Pending payments collected by riders appear here. Confirm them as paid once cash is received.</div>
 <div id="list"></div>
 
@@ -146,6 +146,11 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "/index.html";
+}
 
 function confirmPaid(id) {
   db.collection("payments").doc(id).update({
@@ -187,8 +192,6 @@ db.collection("payments").orderBy("createdAt", "desc").onSnapshot(snapshot => {
   renderList(snapshot);
 });
 </script>
-
-<a class="logout" href="/index.html" onclick="localStorage.clear()">Logout</a>
 
 </body>
 </html>
